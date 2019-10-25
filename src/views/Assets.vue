@@ -1,6 +1,6 @@
 <template>
     <div class="viewassets">
-        <AdminNav/>
+        <StoreNav/>
         <v-container>
         <h1 class="subheading mx-5 my-5 header-color">VIEW ASSETS</h1>
 
@@ -74,22 +74,10 @@
         <v-spacer></v-spacer>
         <v-dialog v-model="dialog" max-width="500px">
           <template v-slot:activator="{ on }">
-            <!-- <v-btn color="#013919" class="white--text new-asset mb-2" v-on="on">
+            <v-btn color="#013919" class="white--text new-asset mb-2" v-on="on">
                 <v-icon left>mdi-plus</v-icon>
                 New Asset
-                </v-btn> -->
-                 <v-btn
-                color="#013919"
-                dark
-                small
-                fixed
-                top
-                right
-                fab
-                v-on="on"
-              >
-              <v-icon>mdi-plus</v-icon>
-                 </v-btn>
+                </v-btn>
           </template>
           <v-card>
             <v-card-title>
@@ -162,10 +150,10 @@
 
 
 <script>
-import AdminNav from '../components/AdminNav'
+import StoreNav from '../components/StoreNav'
 export default {
      components: {
-        AdminNav
+        StoreNav
      },
      data(){
          return{

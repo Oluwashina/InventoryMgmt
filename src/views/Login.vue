@@ -85,7 +85,7 @@ export default {
             this.$router.push('/admin');
           }
           else{
-            this.$router.push('/create');
+            this.$router.push('/users');
           }
         })
         .catch((error)=>{

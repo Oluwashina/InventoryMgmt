@@ -27,7 +27,7 @@
     </v-list-item>
 <v-divider></v-divider>
     <v-card-actions>
-      <v-btn text color="#013919">View Details
+      <v-btn text color="#013919" v-on:click="viewusers()">View Details
         <v-icon right>mdi-chevron-right</v-icon>
       </v-btn>
     </v-card-actions>
@@ -137,6 +137,18 @@ export default {
           name: 'Oluwashina Ojo'
         }
       ]
+    }
+  },
+  methods:{
+     viewusers(){
+      this.$store.dispatch('View')
+      .then((success)=>{
+        console.log(success);
+        this.$router.push('/viewusers')
+      })
+      .catch((error)=>{
+        console.log(error);
+      })
     }
   }
 }

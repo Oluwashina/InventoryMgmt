@@ -107,17 +107,17 @@ export default {
               {
                 title: 'DASHBOARD',
                 icon: 'mdi-apps',
-                route: '/admin'
+                route: '/storekeeper'
               },
               {
                 title: 'VIEW ASSETS',
                 icon: 'mdi-account-multiple',
-                route: '/users'
+                route: '/assets'
               },
               {
                 title: 'TRANSIT FORM',
                 icon: 'mdi-source-branch',
-                route: '/admin'
+                route: '/'
               },
               {
                 title: 'ASSIGN ASSET',

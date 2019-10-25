@@ -34,7 +34,7 @@
       <template v-slot:activator="{ on }">
         <v-btn 
           v-on="on">
-          Admin
+          User
         </v-btn>
       </template>
        <v-list>
@@ -54,17 +54,17 @@
           <v-list-item>
               <v-list-item-content>
                   <v-list-item-title class="title text-center profileName">
-                     Olayioye A.
+                     Olubunmi Praise
                   </v-list-item-title>
               </v-list-item-content>
           </v-list-item>
           <v-list-item>
-            <v-btn color="#013919" class="white--text ml-6 mt-4" router-link to="/create">Create User
+            <v-btn color="#013919" class="white--text ml-6 mt-4" router-link to="/makerequest">Make Request
               <v-icon right>mdi-plus</v-icon>
             </v-btn>
           </v-list-item>
           <v-list dense nav class="mt-6">
-            <v-list-item router-link to="/admin">
+            <v-list-item router-link to="/users">
               <v-list-item-icon>
                 <v-icon color="#013919">mdi-apps</v-icon>
               </v-list-item-icon>
@@ -76,25 +76,37 @@
             </v-list-item>
           </v-list>
             <v-list dense nav class="">
-            <v-list-item  v-on:click="viewusers()">
-              <v-list-item-icon>
-                <v-icon color="#013919">mdi-account-multiple</v-icon>
-              </v-list-item-icon>
-              <v-item-content>
-                <v-list-item-title class="listColor">
-                  USERS
-                </v-list-item-title>
-              </v-item-content>
-            </v-list-item>
-          </v-list>
-           <v-list dense nav class="">
-            <v-list-item router-link to="/viewassets">
+            <v-list-item router-link to="/users">
               <v-list-item-icon>
                 <v-icon color="#013919">mdi-dresser</v-icon>
               </v-list-item-icon>
               <v-item-content>
                 <v-list-item-title class="listColor">
-                  VIEW ASSETS
+                  ASSIGNED ASSETS
+                </v-list-item-title>
+              </v-item-content>
+            </v-list-item>
+          </v-list>
+           <v-list dense nav class="">
+            <v-list-item router-link to="/updateprofile">
+              <v-list-item-icon>
+                <v-icon color="#013919">mdi-account-edit</v-icon>
+              </v-list-item-icon>
+              <v-item-content>
+                <v-list-item-title class="listColor">
+                  UPDATE PROFILE
+                </v-list-item-title>
+              </v-item-content>
+            </v-list-item>
+          </v-list>
+          <v-list dense nav class="">
+            <v-list-item router-link to="/resetpassword">
+              <v-list-item-icon>
+                <v-icon color="#013919">mdi-lock-reset</v-icon>
+              </v-list-item-icon>
+              <v-item-content>
+                <v-list-item-title class="listColor">
+                  PASSWORD RESET
                 </v-list-item-title>
               </v-item-content>
             </v-list-item>
@@ -112,7 +124,6 @@
 </template>
 
 <script>
-import router from '@/router'
 export default {
   data(){
      return{
@@ -120,43 +131,20 @@ export default {
            drawer: true,
            dropdown: [
                 {
-                    title : 'StoreKeeper',
+                    title : 'Store Keeper',
                     icon : 'mdi-plus-circle-outline',
                     route : '/storekeeper'
                 },
                 {
-                    title : 'User',
+                    title : 'Admin',
                     icon : 'mdi-map-marker',
-                    route: '/users'
+                    route : '/admin'
                 },
             ],
-            items:[
-              {
-                title: 'DASHBOARD',
-                icon: 'mdi-apps',
-                route: '/admin'
-              },
-              {
-                title: 'USERS',
-                icon: 'mdi-account-multiple',
-                route: '/users'
-              },
-            ]
         }
   },
   methods:{
-    viewusers(){
-      // const token = this.$store.getters.loggedIn
-      // console.log(token)
-      this.$store.dispatch('View')
-      .then((success)=>{
-        console.log(success);
-        this.$router.push('/viewusers')
-      })
-      .catch((error)=>{
-        console.log(error);
-      })
-    }
+
   },
 }
 </script>

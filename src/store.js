@@ -75,6 +75,32 @@ export default new Vuex.Store({
           reject(error);
         })
       })
-    }
+    },
+    ChangePassword:({commit}, payload)=>{
+      return new Promise((resolve, reject)=>{
+        axios.put("http://192.168.1.133:3000/passwordChange", payload)
+        .then(({status, data})=>{
+          if(status === 200){
+            resolve(data);
+          }
+        })
+        .catch((error)=>{
+          reject(error);
+        });
+      })
+    },
+    Update:({commit}, payload)=>{
+      return new Promise((resolve, reject)=>{
+        axios.put("http://192.168.1.133:3000/Users/5", payload)
+        .then(({status, data})=>{
+          if(status === 201){
+            resolve(data);
+          }
+        })
+        .catch((error)=>{
+          reject(error);
+        });
+      })
+    },
 }
 })
