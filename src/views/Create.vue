@@ -14,6 +14,11 @@
                      <v-btn text color="white" @click="snackbar = false">Close</v-btn>
                 </v-snackbar>
 
+                   <v-snackbar v-model="error" :timeout="4000" top color="error">
+                  <span>Please fill in the missing blank...</span>
+                     <v-btn text color="white" @click="snackbar = false">Close</v-btn>
+                </v-snackbar>
+              
               <v-card-text>
                 <v-form>
                   <v-text-field
@@ -99,6 +104,7 @@ export default {
   },
    data: () => ({
      snackbar: false,
+     error: false,
      firstname: '',
      lastname: '',
      username: '',
@@ -129,6 +135,7 @@ export default {
        })
        .catch((error)=>{
         console.log(error);
+        this.error = true;
        
        })
        console.log(this.checkedNames);

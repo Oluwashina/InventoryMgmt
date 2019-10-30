@@ -2,7 +2,7 @@
     <div class="viewassets">
         <StoreNav/>
         <v-container>
-        <h1 class="subheading mx-5 my-5 header-color">VIEW ASSETS</h1>
+        <h2 class="subheading mx-5 my-5 header-color">VIEW ASSETS</h2>
 
         <v-row>
           <v-col
@@ -130,12 +130,6 @@
         @click="editItem(item)"
       >
         edit
-      </v-icon>
-      <v-icon
-        small
-        @click="deleteItem(item)"
-      >
-        delete
       </v-icon>
     </template>
   </v-data-table>
@@ -267,10 +261,6 @@ export default {
         if (status == 'Good') return '#219653'
         else if (status == 'Okay') return '#FFB44C'
         else return 'red'
-      },
-    deleteItem(item) {
-    const index = this.desserts.indexOf(item)
-    confirm('Are you sure you want to delete this item?') && this.desserts.splice(index, 1)
       },
       editItem(item) {
         this.editedIndex = this.desserts.indexOf(item)

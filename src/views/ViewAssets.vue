@@ -100,22 +100,49 @@
               <v-container>
                 <v-row>
                   <v-col cols="12" sm="6" md="6">
-                    <v-text-field v-model="editedItem.name" label="Asset ID"></v-text-field>
+                    <v-text-field v-model="editedItem.name" label="Name"></v-text-field>
                   </v-col>
                   <v-col cols="12" sm="6" md="6">
-                    <v-text-field v-model="editedItem.asset" label="Asset Description"></v-text-field>
+                    <v-text-field v-model="editedItem.location" label="Location"></v-text-field>
+                  </v-col>
+                </v-row>
+                <v-row>
+                  <v-col cols="12" sm="12" md="12">
+                    <v-text-field v-model="editedItem.asset" label="Description"></v-text-field>
+                  </v-col>
+                </v-row>
+                <v-row>
+                  <v-col cols="12" sm="4" md="4">
+                     <v-autocomplete
+                        v-model="editedItem.status"
+                        :items="countries"
+                        label="Status"
+                        placeholder="Select..."
+                         ></v-autocomplete>
+                  </v-col>
+                  <v-col cols="12" sm="4" md="4">
+                    <v-text-field v-model="editedItem.quantity" type="number" label="Quantity"></v-text-field>
+                  </v-col>
+                  <v-col cols="12" sm="4" md="4">
+                     <v-autocomplete
+                        v-model="editedItem.type"
+                        :items="categories"
+                        label="Category"
+                        placeholder="Select..."
+                         ></v-autocomplete>
+                  </v-col>
+                </v-row>
+                 <v-row>
+                  <v-col cols="12" sm="6" md="6">
+                    <v-text-field v-model="editedItem.brought" label="Brought by:"></v-text-field>
                   </v-col>
                   <v-col cols="12" sm="6" md="6">
-                    <v-text-field v-model="editedItem.quantity" label="Quantity"></v-text-field>
+                    <v-text-field v-model="editedItem.received" label="Received by:"></v-text-field>
                   </v-col>
-                  <v-col cols="12" sm="6" md="6">
-                    <v-text-field v-model="editedItem.type" label="Type"></v-text-field>
-                  </v-col>
-                  <v-col cols="12" sm="6" md="6">
-                    <v-text-field v-model="editedItem.status" label="Status"></v-text-field>
-                  </v-col>
-                   <v-col cols="12" sm="6" md="6">
-                    <v-text-field v-model="editedItem.time" label="Time"></v-text-field>
+                </v-row>
+                 <v-row>
+                  <v-col cols="12" sm="12" md="12">
+                    <v-textarea v-model="editedItem.comment" label="Comment"></v-textarea>
                   </v-col>
                 </v-row>
               </v-container>
@@ -142,12 +169,6 @@
         @click="editItem(item)"
       >
         edit
-      </v-icon>
-      <v-icon
-        small
-        @click="deleteItem(item)"
-      >
-        delete
       </v-icon>
     </template>
   </v-data-table>
@@ -177,6 +198,8 @@ export default {
               title : 'Okay',
             }
             ],
+          countries: ["Good","Bad","Okay"],
+          categories: ["Laptop", "Printer", "Desktop"],
         singleSelect: false,
         selected: [],
         search: '',
@@ -184,11 +207,14 @@ export default {
         editedIndex: -1,
         editedItem: {
             name: '',
+            location: '',
             asset: '',
-            quantity: '',
+            quantity: 0,
             type: '',
             status: '',
-            time: ''
+            brought: '',
+            received: '',
+            comment: ''
          },
         defaultItem: {
             name: '',
@@ -200,16 +226,14 @@ export default {
         },
         headers: [
           {
-            text: 'Asset ID',
+            text: 'Name',
             align: 'left',
             sortable: false,
             value: 'name',
           },
-          { text: 'Asset Description', value: 'asset' },
+          { text: 'Description', value: 'asset' },
           { text: 'Quantity', value: 'quantity' },
-          { text: 'Type', value: 'type' },
-          { text: 'Status', value: 'status' },
-          { text: 'Time', value: 'time' },
+          { text: 'Category', value: 'type' },
           { text: 'Actions', value: 'action', sortable: false },
         ],
         desserts: [
@@ -218,24 +242,18 @@ export default {
             asset: 'Dell Inspiron 15 7000 series',
             quantity: 4,
             type: 'Desktop',
-            status: 'Good',
-            time: '3 hours ago',
           },
           {
             name: 'IB0345',
             asset: 'Acer Predator',
             quantity: 5,
             type: 'Laptop',
-            status: 'Okay',
-            time: '4 hours ago',
           },
           {
             name: 'WR0024',
             asset: 'Apple macbook air',
             quantity: 2,
             type: 'Laptop',
-            status: 'Good',
-            time: '18 hours ago',
           },
           {
             name: 'IB0056',
@@ -243,23 +261,19 @@ export default {
             quantity: 8,
             type: 'Laptop',
             status: 'Good',
-            time: '21 hours ago',
+            location: 'Ibadan',
           },
           {
             name: 'IB0004',
             asset: 'Hp Laserjet Printer',
             quantity: 3,
             type: 'Printer',
-            status: 'Good',
-            time: '2 days ago',
           },
           {
             name: 'WR2024',
             asset: 'Microsoft classic 350C-series',
             quantity: 1,
             type: 'Laptop',
-            status: 'Okay',
-            time: '3 days ago',
           },
         ],
         }
@@ -280,14 +294,10 @@ export default {
         else if (status == 'Okay') return '#FFB44C'
         else return 'red'
       },
-    deleteItem(item) {
-    const index = this.desserts.indexOf(item)
-    confirm('Are you sure you want to delete this item?') && this.desserts.splice(index, 1)
-      },
       editItem(item) {
-        this.editedIndex = this.desserts.indexOf(item)
-        this.editedItem = Object.assign({}, item)
-        this.dialog = true
+        // this.editedIndex = this.desserts.indexOf(item)
+        // this.editedItem = Object.assign({}, item)
+        // this.dialog = true
       },
       close() {
         this.dialog = false
@@ -304,6 +314,23 @@ export default {
           this.desserts.push(this.editedItem)
         }
         this.close()
+        this.$store.dispatch("CreateAsset",{
+          "itemName": this.editedItem.name,
+          "itemDescription": this.editedItem.asset,
+          "quantity": this.editedItem.quantity,
+          "location" : this.editedItem.location,
+          "receivedBy": this.editedItem.received,
+          "broughtBy": this.editedItem.brought,
+          "status": this.editedItem.status,
+          "category": this.editedItem.type,
+          "comment": this.editedItem.comment
+        })
+        .then((success)=>{
+          console.log(success);
+        })
+        .catch((error)=>{
+          console.log(error)
+        });
       },
     }
 }

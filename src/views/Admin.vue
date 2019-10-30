@@ -2,7 +2,7 @@
 <div class="admin">
    <AdminNav/>
    <v-container>
-   <h1>Dashboard</h1>
+   <h1 class="subheading my-5 user-color">Dashboard</h1>
 
     <v-row>
           <v-col
@@ -19,7 +19,7 @@
       </v-list-item-content>
 
       <v-list-item-content >
-        <h1 class="white--text">{{users}}</h1>
+        <h1 class="white--text" v-for="users in count" :key="users.title">{{users.NumberOfUsers}}</h1>
         <p class="white--text">Registered Users</p>
       </v-list-item-content>
 
@@ -81,8 +81,8 @@
       </p>
     </v-card-text>
 
-    <v-list-item-content class="ml-7" v-for="user in Names" v-bind:key="user.title">
-      <p class="name-color">{{user.name}}</p>
+    <v-list-item-content class="ml-7" v-for="user in Users" v-bind:key="user.title">
+      <p class="name-color">{{user.FirstName}} {{user.LastName}}</p>
     </v-list-item-content>
 
   </v-card>
@@ -124,21 +124,33 @@ export default {
   },
   data(){
     return{
-      users: 54,
-      assets: 6,
-      Names: [
-        {
-          name: 'Zachariah Gweba K.'
-        },
-        {
-          name: 'Akande Oremei C.'
-        },
-        {
-          name: 'Oluwashina Ojo'
-        }
-      ]
+      assets: 12,
     }
   },
+  created(){
+    this.$store.dispatch('View')
+      .then((success)=>{
+        console.log(success);
+      })
+      .catch((error)=>{
+        console.log(error);
+    });
+    this.$store.dispatch('CountUsers')
+    .then((success)=>{
+      console.log(success);
+    })
+    .catch((error)=>{
+      console.log(error);
+    })
+  },
+  computed:{
+     Users(){
+        return this.$store.state.users
+          },
+      count(){
+        return this.$store.state.count
+      }
+      },
   methods:{
      viewusers(){
       this.$store.dispatch('View')
@@ -174,6 +186,9 @@ export default {
 }
 .name-color{
   color: #606060;
+}
+.user-color{
+     color:#013919;
 }
 
 </style>

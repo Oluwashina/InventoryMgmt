@@ -117,7 +117,7 @@ export default {
   data(){
      return{
            right: null,
-           drawer: true,
+           drawer: false,
            dropdown: [
                 {
                     title : 'StoreKeeper',

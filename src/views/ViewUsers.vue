@@ -1,14 +1,14 @@
 <template>
 <div class="dashboard">
-    <AdminNav/>
-    <h1 class="subheading mx-5 my-5">Users</h1>
+    <AdminNav/> 
     <v-container class="my-2">
+      <h2 class="subheading my-5 user-color">Users</h2>
     <v-row>
           <v-col
             cols="12"
             sm="6"
             md="8">
-        <h4>Total: {{total}}</h4>
+        <h4 v-for="total in count" :key="total.id">Total: {{total.NumberOfUsers}}</h4>
 
     </v-col>
      <v-col
@@ -27,31 +27,53 @@
         </v-btn>
       </template>
        <v-list>
-        <v-list-item v-for="(item, index) in items" :key="index">
-          <v-list-item-title>{{ item.title }}</v-list-item-title>
+        <v-list-item v-on:click="AllUsers()">
+          <v-list-item-title>All</v-list-item-title>
+        </v-list-item>
+
+         <v-list-item v-on:click="Active()">
+          <v-list-item-title>Active Users</v-list-item-title>
+        </v-list-item>
+
+        <v-list-item v-on:click="Inactive()">
+          <v-list-item-title>Inactive Users</v-list-item-title>
+        </v-list-item>
+      
+        <v-list-item v-on:click="User()">
+          <v-list-item-title>User</v-list-item-title>
+        </v-list-item>
+     
+        <v-list-item v-on:click="Storekeeper()">
+          <v-list-item-title>Storekeeper</v-list-item-title>
+        </v-list-item>
+   
+        <v-list-item v-on:click="Admin()">
+          <v-list-item-title>Admin</v-list-item-title>
         </v-list-item>
       </v-list>
     </v-menu>
      </v-col>
 </v-row>
 
-<v-card class="pa-3 mt-2" v-for="project in projects" v-bind:key="project.title">
+<div>
+<v-card class="pa-3 mt-2" v-for="project in Users" v-bind:key="project.title">
         <v-layout row wrap class="pa-3">
           <v-flex xs12 md6>
             <div class="caption grey--text">
-              Name</div>
-              <div>{{project.name}}</div>
+              Username</div>
+              <div>{{project.UserName}}</div>
           </v-flex>
           <v-flex xs6 sm6 md4>
-            <div class="caption grey--text">Role(s)</div>
-            <div>{{project.role}}</div>
+            <div class="caption grey--text">Names</div>
+            <div>{{project.FirstName}} {{project.LastName}}</div>
           </v-flex>
           <v-flex xs6 sm6 md2>
-            <div class="caption grey--text">Status</div>
-            <div>{{project.status}}</div>
+            <div class="caption grey--text">Phone Number</div>
+            <div>{{project.PhoneNumber}}</div>
           </v-flex>
         </v-layout>
       </v-card>
+  </div>
 
   <div class="text-center mt-5">
     <v-pagination
@@ -59,8 +81,7 @@
       :length="6">
       </v-pagination>
   </div>
-        
-
+      
 
     </v-container>
 
@@ -70,60 +91,86 @@
 
 <script>
 import AdminNav from '../components/AdminNav'
-import axios from 'axios'
 export default {
      components: {
         AdminNav
      },
     data(){
       return{
-        projects: [
-          {
-            name: 'Olubunmi Praise',
-            role: 'User',
-            status: 'Active'
-          },
-          {
-            name: 'Akande Oremei',
-            role: 'Store Keeper',
-            status: 'Inactive'
-          },
-          {
-            name: 'Folalu Timothy',
-            role: 'Admin',
-            status: 'Active'
-          },
-          {
-            name: 'Mbeh Felicity',
-            role: 'User',
-            status: 'InActive'
-          }
-          ],
-          items: [
-            {
-              title : 'StoreKeeper',
-            },
-            {
-              title : 'User',
-            },
-            {
-              title : 'Admin',
-            },
-            {
-              title: 'Active Users'
-            },
-            {
-              title: 'Inactive Users'
-            }
-            ],
-            total: 54,
+            total: 10,
             switch1: true,
-             page: 1,      
+             page: 1,     
             }
         },
+        computed:{
+          Users(){
+            return this.$store.state.users
+          },
+          inactive(){
+            return this.$store.state.inactive
+          },
+          count(){
+            return this.$store.state.count
+          }
+        },
         methods:{
-          
-        }
+          Inactive(){
+          this.$store.dispatch('InactiveUsers')
+            .then((success)=>{
+            console.log(success);
+            // this.$router.push('/viewusers/inactive')
+           })
+          .catch((error)=>{
+          console.log(error);
+      })
+    },
+    AllUsers(){
+      this.$store.dispatch('View')
+       .then((success)=>{
+            console.log(success);
+           })
+          .catch((error)=>{
+          console.log(error);
+      })
+    },
+    User(){
+      this.$store.dispatch('Users')
+      .then((success)=>{
+        console.log(success)
+      })
+      .catch((error)=>{
+        console.log(error);
+      });
+    },
+    Storekeeper(){
+      this.$store.dispatch('Storekeeper')
+      .then((success)=>{
+        console.log(success)
+      })
+      .catch((error)=>{
+        console.log(error);
+      });
+    },
+    Admin(){
+      this.$store.dispatch('admin')
+      .then((success)=>{
+        console.log(success)
+      })
+      .catch((error)=>{
+        console.log(error);
+      });
+    },
+    Active(){
+      this.$store.dispatch('ActiveUsers')
+      .then((success)=>{
+        console.log(success)
+      })
+      .catch((error)=>{
+        console.log(error);
+      });
+    },
+
+  }
     
 }
 </script>
@@ -131,6 +178,9 @@ export default {
 <style scoped>
 .filterText{
     color: #5F5D5D;
+}
+.user-color{
+     color:#013919;
 }
 
 </style>

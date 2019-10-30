@@ -59,7 +59,7 @@
               </v-list-item-content>
           </v-list-item>
           <v-list-item>
-            <v-btn color="#013919" class="white--text ml-6 mt-4" router-link to="/create">Add New Asset
+            <v-btn color="#013919" class="white--text ml-6 mt-4" router-link to="/assets">Add New Asset
               <v-icon right>mdi-plus</v-icon>
             </v-btn>
           </v-list-item>
@@ -90,7 +90,7 @@ export default {
   data(){
      return{
            right: null,
-           drawer: true,
+           drawer: false,
            dropdown: [
                 {
                     title : 'Admin',
@@ -122,7 +122,7 @@ export default {
               {
                 title: 'ASSIGN ASSET',
                 icon: 'mdi-apps',
-                route: '/'
+                route: '/assignasset'
               },
               {
                 title: 'GENERATE REPORT',

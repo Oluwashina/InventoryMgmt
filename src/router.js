@@ -13,8 +13,11 @@ import UpdateProfile from './views/UpdateProfile.vue'
 import ResetPassword from './views/ResetPassword.vue'
 import MakeRequest from './views/MakeRequest.vue'
 import SelectedAsset from './views/SelectedAsset.vue'
+import AssignedAsset from './views/AssignedAsset.vue'
+import AssignAsset from './views/AssignAsset.vue'
 
 Vue.use(Router)
+
 
 export default new Router({
   mode: 'history',
@@ -84,6 +87,16 @@ export default new Router({
       path: '/selectedasset',
       name: 'SelectedAsset',
       component: SelectedAsset
+    },
+    {
+      path: '/assignedasset',
+      name: 'AssignedAsset',
+      component:  AssignedAsset
+    },
+    {
+      path: '/assignasset',
+      name: 'AssignAsset',
+      component: AssignAsset
     }
   ]
 })

@@ -6,15 +6,6 @@
         <span class="white--text">Kayar</span>
       </v-toolbar-title>
       <v-spacer></v-spacer>
-       <v-text-field
-        flat
-        solo-inverted
-        hide-details
-        label="Search"
-        append-icon="search"
-        color="#ffffff" 
-        class="hidden-sm-and-down">
-      </v-text-field>
       <v-btn icon class="white--text">
         <v-icon>mdi-apps</v-icon>
       </v-btn>
@@ -76,7 +67,7 @@
             </v-list-item>
           </v-list>
             <v-list dense nav class="">
-            <v-list-item router-link to="/users">
+            <v-list-item router-link to="/assignedasset">
               <v-list-item-icon>
                 <v-icon color="#013919">mdi-dresser</v-icon>
               </v-list-item-icon>
@@ -128,7 +119,7 @@ export default {
   data(){
      return{
            right: null,
-           drawer: true,
+           drawer: false,
            dropdown: [
                 {
                     title : 'Store Keeper',

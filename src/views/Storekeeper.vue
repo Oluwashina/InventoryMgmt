@@ -2,7 +2,7 @@
 <div class="admin">
    <StoreNav/>
    <v-container>
-   <h1>Dashboard</h1>
+  <h2 class="subheading mx-5 my-5 header-color">DASHBOARD</h2>
 
             <v-row>
           <v-col
@@ -138,5 +138,8 @@ export default {
 
 
 <style scoped>
+.header-color{
+     color:#013919;
+}
 
 </style>

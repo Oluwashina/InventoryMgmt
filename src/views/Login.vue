@@ -38,8 +38,11 @@
                     label="Password"
                     v-model="password"
                     prepend-inner-icon="mdi-lock"
-                    type="password" single-line outlined
+                   single-line outlined
                     color="#013919"
+                    :append-icon="show1 ? 'visibility' : 'visibility_off'"
+                    :type="show1 ? 'text' : 'password'"
+                    @click:append="show1 = !show1"
                   ></v-text-field>
                 </v-form>
               </v-card-text>
@@ -66,6 +69,7 @@ import router from '@/router'
 export default {
     data: () => ({
       drawer: null,
+      show1: false,
       username: '',
       password: '',
       snackbar: false
