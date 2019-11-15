@@ -14,9 +14,9 @@
             sm="8"
             md="6"
           >
-            <v-card class="elevation-10"  color="rgba(255, 255, 255, 0.8)">
+            <v-card class="elevation-10"  color="#D7E9FB">
                 <v-card-text class="text-center">
-                <v-img src="/LogoSvg.svg" max-width="100"
+                <v-img src="/Icon125.svg" max-width="100"
       max-height="100" aspect-ratio="1" class="mx-auto"></v-img>
                 </v-card-text>
                 <v-snackbar v-model="snackbar" :timeout="4000" top color="error">
@@ -35,21 +35,21 @@
                     <v-form>
                   <v-text-field
                     label="Enter your email address"
-                    v-model="email"
+                    v-model="email" :rules="emailRules" 
                     prepend-inner-icon="mdi-email"
-                    type="text" single-line outlined
-                    color="#013919"  
+                    type="text" single-line
+                    solo required
                   ></v-text-field>
                     </v-form>
                 </v-card-text>
                 </v-container>
                 <v-card-text class="text-center mb-3">
-                <v-btn color="#013919" class="white--text" v-on:click="reset()">Reset
+                <v-btn color="#1976D2" class="white--text" v-on:click="reset()">Reset
                 </v-btn>
                 </v-card-text>
 
                 <v-list-item>
-                 <v-btn text color="#013919" class="" router-link to="/">
+                 <v-btn text color="#1976D2" class="" router-link to="/">
                     <v-icon left>mdi-chevron-left</v-icon>
                         Back to Login
                 </v-btn>
@@ -72,7 +72,11 @@ export default {
         return{
             email: '',
             username: '',
-            snackbar: false
+            snackbar: false,
+             emailRules: [
+               v => !!v || 'E-mail is required',
+               v => /.+@.+/.test(v) || 'E-mail must be valid',
+            ],
         }
     },
     methods:{
@@ -102,7 +106,7 @@ background-size: cover;
     border-radius: 28px;
 }
 .forgot-color{
- color:#013919;   
+ color:#5F5D5D;   
 }
 .size{
     font-size: 15px;

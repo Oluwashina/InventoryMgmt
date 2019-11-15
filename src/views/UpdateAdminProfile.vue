@@ -1,9 +1,9 @@
 <template>
-<div class="users">
-    <UsersNav/>
-  <v-container>
-        <h2 class="subheading mx-5 my-2 update-color">EDIT PROFILE</h2>
-          <v-snackbar v-model="snackbar" :timeout="4000" top color="success">
+<div class="admin">
+   <AdminNav/>
+   <v-container>
+    <h2 class="subheading mx-5 my-2 update-color">EDIT PROFILE</h2>
+     <v-snackbar v-model="snackbar" :timeout="4000" top color="success">
                   <span>Profile successfully updated...</span>
                      <v-btn text color="white" @click="snackbar = false">Close</v-btn>
                 </v-snackbar>
@@ -33,8 +33,8 @@
                         </v-col>
 
                         <v-col
-                        cols="12"
-                         sm="12" class="mt-5"
+                        cols="12" class="mt-5"
+                         sm="12"
                             md="6">
 
                        <v-text-field
@@ -110,25 +110,29 @@
                     <div class="text-center mt-n8">
                         <v-btn color="#1976D2" class="white--text ma-2 mb-12" v-on:click="update()">Update Profile
                         </v-btn>
-                        <v-btn color="#1976D2" class="white--text ma-2 mb-12" router-link to="/resetpassword">Change Password
+                        <v-btn color="#1976D2" class="white--text ma-2 mb-12" router-link to="/resetadminpassword">Change Password
                         </v-btn>
                     </div>
             </v-card>
           </v-col>
         </v-row> 
-      </v-container>
-</div>
-    
+
+   </v-container>
+
+
+   </div>
+
 </template>
 
 
+
 <script>
-import UsersNav from '../components/UsersNav'
+import AdminNav from '../components/AdminNav';
 export default {
     components:{
-        UsersNav
+       AdminNav
     },
-    data(){
+     data(){
         return{
             firstname: this.$store.state.username[0].FirstName,
             lastname: this.$store.state.username[0].LastName,
@@ -138,7 +142,7 @@ export default {
             snackbar: false
         }
     },
-    methods:{
+    methods:{   
         update(){
         this.$store.dispatch("Update", {
            "staff_id": this.$store.state.logindata.Staff_Id,
@@ -151,23 +155,24 @@ export default {
        })
         .then((success)=>{
          console.log(success);
-         this.snackbar = true
+         this.snackbar = true;
        })
        .catch((error)=>{
          console.log(error);
        });
     }
- },
-computed:{
+  },
+  computed:{
     Login(){
       return this.$store.state.logindata.roleId
     },
     Username(){
       return this.$store.state.username
     }
-  },
+  }
 }
 </script>
+
 
 <style scoped>
 .name-center{
@@ -176,9 +181,10 @@ computed:{
 .update-color{
      color:#5F5D5D;
 }
-.users{
+.admin{
   background-color: #CAD8E6;
   background-size: cover;
   height: 100%;
 }
+
 </style>

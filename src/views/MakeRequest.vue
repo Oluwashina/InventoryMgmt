@@ -14,7 +14,7 @@
             cols="12"
             sm="6"
             md="2">
-            <v-btn class="mx-5 my-5">{{count}} Selected</v-btn>
+            <v-btn class="mx-5 my-5">{{request.length}} Selected</v-btn>
            </v-col>
 
         </v-row>
@@ -31,11 +31,28 @@
             <p class="asset-color">
             Search Asset to request
             </p>
-             <v-text-field placeholder="Dell, Hp printer, Screw Driver" prepend-inner-icon="mdi-magnify"></v-text-field>
+             <v-autocomplete placeholder="Search" v-model="request" :items="Assets" item-text="item_Name"
+                        item-value="item_Name" clearable prepend-inner-icon="search" multiple
+                        @change="selectedcount()" hide-selected="true" :return-object="true"
+                        no-data-text="Please kindly select from the assets available"
+                        >
+                        <!-- <template v-slot:item="data">
+                           <template v-if="typeof data.item !== 'object'">
+                              <v-list-item-content v-text="data.item"></v-list-item-content>
+                            </template>
+                          <v-list-item-content>
+                             <v-list-item-title v-html="data.item.item_Name"></v-list-item-title>
+                             <v-list-item-subtitle v-html="data.item.item_Desc"></v-list-item-subtitle>
+                             <v-list-item-subtitle v-html="data.item.Quantity"></v-list-item-subtitle>
+                           </v-list-item-content>
+                        </template> -->
+             </v-autocomplete>
+
           </v-card-text>
 
            <v-card-text class="text-right">
-                <v-btn color="#013919" class="white--text"  router-link to="/selectedasset">Continue
+             
+                <v-btn color="#013919" class="white--text"  v-on:click="cont()">Continue
                     <v-icon right>mdi-chevron-right</v-icon>
                 </v-btn>
               </v-card-text>
@@ -57,7 +74,7 @@
           <v-col
             cols="12"
             sm="6"
-            md="6">
+            md="6" v-for="assets in Assets" :key="assets.id">
             
    <v-card
     class="elevation-8 mx-5"
@@ -66,8 +83,8 @@
     <v-list-item three-line >
       <v-list-item-content>
           <v-card-text>
-              <h3 class="request-color">Printer</h3>
-              <h4 class="request-color" style="margin-top:20px;">Hp Laserjet Printer 250E-series</h4>
+              <h3 class="request-color">{{assets.item_Name}}</h3>
+              <h4 class="request-color" style="margin-top:20px;">{{assets.item_Desc}}</h4>
           </v-card-text>
       </v-list-item-content>
 
@@ -87,176 +104,7 @@
    </v-card>
 
           </v-col>
-          <v-col
-            cols="12"
-            sm="6"
-            md="6">
-             <v-card
-    class="elevation-8 mx-5"
-    color="#ffffff" 
-    >
-    <v-list-item three-line >
-      <v-list-item-content>
-          <v-card-text>
-              <h3 class="request-color">Desktop</h3>
-              <h4 class="request-color" style="margin-top:20px;">Dell Inspiron 15 7000 series</h4>
-          </v-card-text>
-      </v-list-item-content>
-
-      <v-list-item-content >
-        <v-btn
-         small
-         absolute
-         fab
-         v-on="on"
-         class="btn-adjust"
-          v-on:click="select()"
-              >
-        <v-icon color="#013919">{{icon}}</v-icon>
-        </v-btn>
-      </v-list-item-content>
-    </v-list-item>
-   </v-card>
-
-          </v-col>
-          </v-row>
-           
-           <!-- second row -->
-            <v-row>
-          <v-col
-            cols="12"
-            sm="6"
-            md="6">
-            
-   <v-card
-    class="elevation-8 mx-5"
-    color="#ffffff"
-    >
-    <v-list-item three-line >
-      <v-list-item-content>
-          <v-card-text>
-              <h3 class="request-color">Laptop</h3>
-              <h4 class="request-color" style="margin-top:20px;">Hp Laserjet Printer 250E-series</h4>
-          </v-card-text>
-      </v-list-item-content>
-
-      <v-list-item-content >
-       <v-btn
-         small
-         absolute
-         fab
-         v-on="on"
-         class="btn-adjust"
-          v-on:click="select()"
-              >
-        <v-icon color="#013919">{{icon}}</v-icon>
-        </v-btn>
-      </v-list-item-content>
-    </v-list-item>
-   </v-card>
-
-          </v-col>
-          <v-col
-            cols="12"
-            sm="6"
-            md="6">
-             <v-card
-    class="elevation-8 mx-5"
-    color="#ffffff" 
-    >
-    <v-list-item three-line >
-      <v-list-item-content>
-          <v-card-text>
-              <h3 class="request-color">Desktop</h3>
-              <h4 class="request-color" style="margin-top:20px;">Hp Laserjet Printer 250E-series</h4>
-          </v-card-text>
-      </v-list-item-content>
-
-      <v-list-item-content >
-        <v-btn
-         small
-         absolute
-         fab
-         v-on="on"
-         class="btn-adjust"
-          v-on:click="select()"
-              >
-        <v-icon color="#013919">{{icon}}</v-icon>
-        </v-btn>
-      </v-list-item-content>
-    </v-list-item>
-   </v-card>
-
-          </v-col>
-          </v-row>
-
-          <!-- third row -->
-           <v-row>
-          <v-col
-            cols="12"
-            sm="6"
-            md="6">
-            
-   <v-card
-    class="elevation-8 mx-5"
-    color="#ffffff"
-    >
-    <v-list-item three-line >
-      <v-list-item-content>
-          <v-card-text>
-              <h3 class="request-color">Laptop</h3>
-              <h4 class="request-color" style="margin-top:20px;">Hp Laserjet Printer 250E-series</h4>
-          </v-card-text>
-      </v-list-item-content>
-
-      <v-list-item-content >
-       <v-btn
-         small
-         absolute
-         fab
-         v-on="on"
-         class="btn-adjust"
-          v-on:click="select()"
-              >
-        <v-icon color="#013919">{{icon}}</v-icon>
-        </v-btn>
-      </v-list-item-content>
-    </v-list-item>
-   </v-card>
-
-          </v-col>
-          <v-col
-            cols="12"
-            sm="6"
-            md="6">
-             <v-card
-    class="elevation-8 mx-5"
-    color="#ffffff" 
-    >
-    <v-list-item three-line >
-      <v-list-item-content>
-          <v-card-text>
-              <h3 class="request-color">Printer</h3>
-              <h4 class="request-color" style="margin-top:20px;">Hp Laserjet Printer 250E-series</h4>
-          </v-card-text>
-      </v-list-item-content>
-
-      <v-list-item-content >
-        <v-btn
-         small
-         absolute
-         fab
-         v-on="on"
-         class="btn-adjust"
-          v-on:click="select()"
-              >
-        <v-icon color="#013919">{{icon}}</v-icon>
-        </v-btn>
-      </v-list-item-content>
-    </v-list-item>
-   </v-card>
-
-          </v-col>
+          
           </v-row>
           
            <v-card-text class="text-right">
@@ -284,7 +132,7 @@ export default {
     data(){
         return{
             icon: 'mdi-plus',
-            count: 0
+            request: '',
         }
     },
     methods:{
@@ -296,8 +144,30 @@ export default {
             else{
                 this.icon = 'mdi-plus'
             }
-        }
-
+        },
+        selectedcount(){
+          console.log(this.request)
+        },
+        cont(){
+          // alert(data);
+          console.log(this.request)
+          this.$store.dispatch("selected", this.request)
+          this.$router.push('/selectedasset')
+    },
+  },
+    computed:{
+      Assets(){
+        return this.$store.state.assets
+      },
+    },
+    created(){
+      this.$store.dispatch("ViewAssets")
+      .then((success)=>{
+        console.log(success);
+      })
+      .catch((error)=>{
+        console.log(error);
+      });
     }
     
 }

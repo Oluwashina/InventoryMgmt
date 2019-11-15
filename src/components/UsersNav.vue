@@ -1,63 +1,69 @@
 <template>
   <nav>
-   <v-app-bar clipped app color="#013919">
+   <v-app-bar clipped app color="#1976D2">
       <v-app-bar-nav-icon class="white--text" @click="drawer = !drawer"></v-app-bar-nav-icon>
       <v-toolbar-title class="headline text-uppercase">
         <span class="white--text">Kayar</span>
       </v-toolbar-title>
-      <v-spacer></v-spacer>
-      <v-btn icon class="white--text">
+      <div class="flex-grow-1"></div>
+      <v-btn icon class="white--text mr-3">
         <v-icon>mdi-apps</v-icon>
       </v-btn>
-      <v-btn icon class="white--text">
+      <!-- <v-btn icon class="white--text">
         <v-icon>mdi-bell</v-icon>
-      </v-btn>
+      </v-btn> -->
+    <v-badge color="red" overlap left class="mr-3">
+      <template v-slot:badge>
+        <span>{{messages}}</span>
+      </template>
+      <v-icon class="white--text">mdi-bell</v-icon>
+    </v-badge>
        <v-btn icon class="white--text" router-link to="/">
         <v-icon>mdi-logout</v-icon>
       </v-btn>
     </v-app-bar>
-     <v-navigation-drawer app clipped-left v-model="drawer" color="#E1FFEE">
+     <v-navigation-drawer app clipped-left v-model="drawer" color="#CAD8E6">
 
        <v-flex class="mt-5">
-       <v-btn text color="#013919" class="switchSize">Switch Role:</v-btn>
+       <v-btn text color="#1976D2" class="switchSize">Switch Role:</v-btn>
           <!-- dropdown -->
     <v-menu offset-y >
       <template v-slot:activator="{ on }">
-        <v-btn 
+        <v-btn color="rgba(46, 42, 35, 0.3)"
           v-on="on">
           User
         </v-btn>
       </template>
        <v-list>
-        <v-list-item v-for="(item, index) in dropdown" :key="index" router :to="item.route" >
-          <v-list-item-title>{{ item.title }}</v-list-item-title>
+        <v-list-item v-for="(item, index) in Login" :key="index" @click="Toggle(item)">
+          <v-list-item-title>{{ item}}</v-list-item-title>
         </v-list-item>
       </v-list>
     </v-menu>
        </v-flex>
            <v-layout column align-center>
-              <v-flex class="mt-6">
+              <v-flex class="mt-8">
                   <v-avatar size="80" class="avatarC">
-                      <v-icon large color="#013919">mdi-account</v-icon>
+                      <v-icon large color="#1976D2">mdi-account</v-icon>
                   </v-avatar>
               </v-flex>
           </v-layout>
           <v-list-item>
               <v-list-item-content>
-                  <v-list-item-title class="title text-center profileName">
-                     Olubunmi Praise
+                  <v-list-item-title class="title text-center profileName" v-for="user in Username" :key="user.id">
+                     {{user.FirstName}} {{user.LastName}}
                   </v-list-item-title>
               </v-list-item-content>
           </v-list-item>
           <v-list-item>
-            <v-btn color="#013919" class="white--text ml-6 mt-4" router-link to="/makerequest">Make Request
+            <v-btn color="#1976D2" class="white--text ml-6 mt-4" router-link to="/makerequest">Make Request
               <v-icon right>mdi-plus</v-icon>
             </v-btn>
           </v-list-item>
           <v-list dense nav class="mt-6">
             <v-list-item router-link to="/users">
               <v-list-item-icon>
-                <v-icon color="#013919">mdi-apps</v-icon>
+                <v-icon color="#1976D2">mdi-apps</v-icon>
               </v-list-item-icon>
               <v-item-content>
                 <v-list-item-title class="listColor">
@@ -65,11 +71,9 @@
                 </v-list-item-title>
               </v-item-content>
             </v-list-item>
-          </v-list>
-            <v-list dense nav class="">
             <v-list-item router-link to="/assignedasset">
               <v-list-item-icon>
-                <v-icon color="#013919">mdi-dresser</v-icon>
+                <v-icon color="#1976D2">mdi-dresser</v-icon>
               </v-list-item-icon>
               <v-item-content>
                 <v-list-item-title class="listColor">
@@ -77,27 +81,13 @@
                 </v-list-item-title>
               </v-item-content>
             </v-list-item>
-          </v-list>
-           <v-list dense nav class="">
             <v-list-item router-link to="/updateprofile">
               <v-list-item-icon>
-                <v-icon color="#013919">mdi-account-edit</v-icon>
+                <v-icon color="#1976D2">mdi-account-edit</v-icon>
               </v-list-item-icon>
               <v-item-content>
                 <v-list-item-title class="listColor">
                   UPDATE PROFILE
-                </v-list-item-title>
-              </v-item-content>
-            </v-list-item>
-          </v-list>
-          <v-list dense nav class="">
-            <v-list-item router-link to="/resetpassword">
-              <v-list-item-icon>
-                <v-icon color="#013919">mdi-lock-reset</v-icon>
-              </v-list-item-icon>
-              <v-item-content>
-                <v-list-item-title class="listColor">
-                  PASSWORD RESET
                 </v-list-item-title>
               </v-item-content>
             </v-list-item>
@@ -119,7 +109,8 @@ export default {
   data(){
      return{
            right: null,
-           drawer: false,
+           drawer: true,
+           messages: 1,
            dropdown: [
                 {
                     title : 'Store Keeper',
@@ -134,9 +125,39 @@ export default {
             ],
         }
   },
-  methods:{
-
+  computed:{
+     Login(){
+      return this.$store.state.logindata.roleId
+    },
+    Username(){
+      return this.$store.state.username
+    }
   },
+  methods:{
+    Toggle(item){
+      if(item == 'Storekeeper'){
+        this.$router.push('/storekeeper')
+      }
+      else if(item == "Admin"){
+        this.$router.push('/admin')
+      }
+      else{
+        this.$router.push('/users')
+      }
+    },
+    badge(){
+      alert("hello")
+    }
+  },
+  created(){
+    this.$store.dispatch("UserName",this.$store.state.logindata.Staff_Id)
+    .then((success)=>{
+      console.log(success)
+    })
+    .catch((error)=>{
+      console.log(error)
+    })
+  }
 }
 </script>
 
@@ -151,10 +172,13 @@ export default {
   line-height: 43px;
 }
 .avatarC{
-  border: 3px solid #013919;
+  border: 3px solid #1976D2;
 }
 .listColor{
-  color: #013919;
+  color: #1976D2;
+}
+.icon-size{
+  font-size: 25px;
 }
 
 </style>

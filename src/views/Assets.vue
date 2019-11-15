@@ -2,14 +2,13 @@
     <div class="viewassets">
         <StoreNav/>
         <v-container>
-        <h2 class="subheading mx-5 my-5 header-color">VIEW ASSETS</h2>
-
+        <h2 class="subheading mx-5 my-2 header-color">VIEW ASSETS</h2>
         <v-row>
           <v-col
             cols="12"
             sm="12"
             md="12">
-             <v-card class="elevation-8" color="#F0FDF5">
+             <v-card class="elevation-8" color="white">
                  <v-container>
                     
                 <v-row>
@@ -19,22 +18,7 @@
                          md="6">
         
             <!-- dropdown -->
-    <v-menu offset-y>
-      <template v-slot:activator="{ on }">
-        <v-btn 
-          v-on="on" 
-          color="#5F5D5D" class="white--text filter new-asset"
-        >
-         <v-icon left>mdi-filter</v-icon>
-          Filter assets orders:
-        </v-btn>
-      </template>
-       <v-list>
-        <v-list-item v-for="(item, index) in items" :key="index">
-          <v-list-item-title>{{ item.title }}</v-list-item-title>
-        </v-list-item>
-      </v-list>
-    </v-menu>
+   
      </v-col>
          
      <v-col
@@ -55,10 +39,9 @@
         <v-data-table
     v-model="selected"
     :headers="headers"
-    :items="desserts"
+    :items="Assets"
+     :items-per-page="5"
     :single-select="singleSelect"
-    item-key="name"
-    show-select
     :search="search"
     class="elevation-1"
   >
@@ -74,47 +57,11 @@
         <v-spacer></v-spacer>
         <v-dialog v-model="dialog" max-width="500px">
           <template v-slot:activator="{ on }">
-            <v-btn color="#013919" class="white--text new-asset mb-2" v-on="on">
+            <v-btn color="#1976D2" class="white--text new-asset mb-2" router-link to="/newasset">
                 <v-icon left>mdi-plus</v-icon>
                 New Asset
                 </v-btn>
           </template>
-          <v-card>
-            <v-card-title>
-              <span class="headline">{{ formTitle }}</span>
-            </v-card-title>
-
-            <v-card-text>
-              <v-container>
-                <v-row>
-                  <v-col cols="12" sm="6" md="6">
-                    <v-text-field v-model="editedItem.name" label="Asset ID"></v-text-field>
-                  </v-col>
-                  <v-col cols="12" sm="6" md="6">
-                    <v-text-field v-model="editedItem.asset" label="Asset Description"></v-text-field>
-                  </v-col>
-                  <v-col cols="12" sm="6" md="6">
-                    <v-text-field v-model="editedItem.quantity" label="Quantity"></v-text-field>
-                  </v-col>
-                  <v-col cols="12" sm="6" md="6">
-                    <v-text-field v-model="editedItem.type" label="Type"></v-text-field>
-                  </v-col>
-                  <v-col cols="12" sm="6" md="6">
-                    <v-text-field v-model="editedItem.status" label="Status"></v-text-field>
-                  </v-col>
-                   <v-col cols="12" sm="6" md="6">
-                    <v-text-field v-model="editedItem.time" label="Time"></v-text-field>
-                  </v-col>
-                </v-row>
-              </v-container>
-            </v-card-text>
-
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn color="#013919" text @click="close">Cancel</v-btn>
-              <v-btn color="#013919" text @click="save">Save</v-btn>
-            </v-card-actions>
-          </v-card>
         </v-dialog>
       </v-toolbar>
     </template>
@@ -132,6 +79,15 @@
         edit
       </v-icon>
     </template>
+
+     <template v-slot:item="{item}">
+          <tr @click="showAlert(item.item_id)">
+          <td>{{ item.item_Name }}</td>
+          <td>{{ item.item_Desc }}</td>
+          <td>{{ item.Quantity }}</td>
+           </tr>
+    </template>
+
   </v-data-table>
     
   </v-card>
@@ -161,94 +117,32 @@ export default {
             ],
         singleSelect: false,
         selected: [],
+        snackbar: false,
+        countries: ["Good","Bad"],
         search: '',
         dialog: false,
         editedIndex: -1,
-        editedItem: {
-            name: '',
-            asset: '',
-            quantity: '',
-            type: '',
-            status: '',
-            time: ''
-         },
-        defaultItem: {
-            name: '',
-            asset: '',
-            quantity: 0,
-            type: '',
-            status: '',
-            time: ''
-        },
         headers: [
           {
-            text: 'Asset ID',
+            text: 'Name',
             align: 'left',
             sortable: false,
-            value: 'name',
+            value: 'item_Name',
           },
-          { text: 'Asset Description', value: 'asset' },
-          { text: 'Quantity', value: 'quantity' },
-          { text: 'Type', value: 'type' },
-          { text: 'Status', value: 'status' },
-          { text: 'Time', value: 'time' },
-          { text: 'Actions', value: 'action', sortable: false },
-        ],
-        desserts: [
-          {
-            name: 'IB0024',
-            asset: 'Dell Inspiron 15 7000 series',
-            quantity: 4,
-            type: 'Desktop',
-            status: 'Good',
-            time: '3 hours ago',
-          },
-          {
-            name: 'IB0345',
-            asset: 'Acer Predator',
-            quantity: 5,
-            type: 'Laptop',
-            status: 'Okay',
-            time: '4 hours ago',
-          },
-          {
-            name: 'WR0024',
-            asset: 'Apple macbook air',
-            quantity: 2,
-            type: 'Laptop',
-            status: 'Good',
-            time: '18 hours ago',
-          },
-          {
-            name: 'IB0056',
-            asset: 'Hp envy 250-CL series',
-            quantity: 8,
-            type: 'Laptop',
-            status: 'Good',
-            time: '21 hours ago',
-          },
-          {
-            name: 'IB0004',
-            asset: 'Hp Laserjet Printer',
-            quantity: 3,
-            type: 'Printer',
-            status: 'Good',
-            time: '2 days ago',
-          },
-          {
-            name: 'WR2024',
-            asset: 'Microsoft classic 350C-series',
-            quantity: 1,
-            type: 'Laptop',
-            status: 'Okay',
-            time: '3 days ago',
-          },
+          { text: 'Description', value: 'item_Desc' },
+          { text: 'Quantity', value: 'Quantity' },
         ],
         }
      },
      computed: {
       formTitle () {
         return this.editedIndex === -1 ? 'New Asset' : 'Edit Asset'
+      },
+      Assets(){
+        return this.$store.state.assets
+      },
+      category(){
+        return this.$store.state.category
       },
     },
      watch: {
@@ -267,6 +161,17 @@ export default {
         this.editedItem = Object.assign({}, item)
         this.dialog = true
       },
+      showAlert(a){
+        alert(a);
+        this.$store.dispatch("ViewAssetsById", a)
+        .then((success)=>{
+          console.log(success);
+          this.$router.push(`/assets/${success.lot[0].item_id}`)
+        })
+        .catch((error)=>{
+          console.log(error);
+        })
+      },
       close() {
         this.dialog = false
         setTimeout(() => {
@@ -274,31 +179,43 @@ export default {
           this.editedIndex = -1
         }, 300)
       },
-
-      save(){
-        if (this.editedIndex > -1) {
-          Object.assign(this.desserts[this.editedIndex], this.editedItem)
-        } else {
-          this.desserts.push(this.editedItem)
-        }
-        this.close()
-      },
+  },
+    created(){
+      this.$store.dispatch("ViewAssets")
+      .then((success)=>{
+        console.log(success);
+      })
+      .catch((error)=>{
+        console.log(error);
+      });
+      this.$store.dispatch("Category")
+      .then((success)=>{
+        console.log(success);
+      })
+      .catch((error)=>{
+        console.log(error);
+      })
     }
-}
+  }
 </script>
 
 <style scoped>
 .header-color{
-     color:#013919;
+     color:#5F5D5D;
 }
 .filter{
     text-transform: initial;
 }
 .new-asset{
-    border: 3px solid #5F5D5D;
+    border: 3px solid #1976D2;
     box-sizing: border-box;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     border-radius: 20px;
+}
+.viewassets{
+   background-color: #CAD8E6;
+  background-size: cover;
+  height: 100%;
 }
 
 </style>

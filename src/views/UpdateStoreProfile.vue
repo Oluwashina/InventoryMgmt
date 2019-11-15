@@ -1,18 +1,18 @@
 <template>
 <div class="users">
-    <UsersNav/>
+    <StoreNav/>
   <v-container>
         <h2 class="subheading mx-5 my-2 update-color">EDIT PROFILE</h2>
-          <v-snackbar v-model="snackbar" :timeout="4000" top color="success">
+         <v-snackbar v-model="snackbar" :timeout="4000" top color="success">
                   <span>Profile successfully updated...</span>
                      <v-btn text color="white" @click="snackbar = false">Close</v-btn>
                 </v-snackbar>
-     <v-row>
+          <v-row>
           <v-col
             cols="12"
             sm="12"
             md="10">
-            <v-card class="elevation-10"  color="white">
+            <v-card class="elevation-3" color="white">
                 <v-card-text>
                 <v-form>
                      <v-row>
@@ -107,30 +107,30 @@
                     </v-row>
                 </v-form>
                 </v-card-text>
-                    <div class="text-center mt-n8">
+                    <div class="text-center">
                         <v-btn color="#1976D2" class="white--text ma-2 mb-12" v-on:click="update()">Update Profile
                         </v-btn>
-                        <v-btn color="#1976D2" class="white--text ma-2 mb-12" router-link to="/resetpassword">Change Password
+                        <v-btn color="#1976D2" class="white--text ma-2 mb-12" router-link to="/resetstorepassword">Change Password
                         </v-btn>
                     </div>
             </v-card>
           </v-col>
         </v-row> 
-      </v-container>
+  </v-container>
 </div>
     
 </template>
 
 
 <script>
-import UsersNav from '../components/UsersNav'
+import StoreNav from '../components/StoreNav'
 export default {
-    components:{
-        UsersNav
+      components:{
+        StoreNav
     },
     data(){
         return{
-            firstname: this.$store.state.username[0].FirstName,
+             firstname: this.$store.state.username[0].FirstName,
             lastname: this.$store.state.username[0].LastName,
             username: this.$store.state.username[0].UserName,
             email: this.$store.state.username[0].Email,
@@ -138,8 +138,8 @@ export default {
             snackbar: false
         }
     },
-    methods:{
-        update(){
+    methods: {
+         update(){
         this.$store.dispatch("Update", {
            "staff_id": this.$store.state.logindata.Staff_Id,
            "username": this.$store.state.username[0].UserName,
@@ -157,7 +157,7 @@ export default {
          console.log(error);
        });
     }
- },
+},
 computed:{
     Login(){
       return this.$store.state.logindata.roleId
@@ -169,6 +169,7 @@ computed:{
 }
 </script>
 
+
 <style scoped>
 .name-center{
     text-align: center;
@@ -178,7 +179,8 @@ computed:{
 }
 .users{
   background-color: #CAD8E6;
-  background-size: cover;
-  height: 100%;
+  height: 100vh;
 }
+
+
 </style>

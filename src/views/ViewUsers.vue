@@ -1,19 +1,26 @@
 <template>
 <div class="dashboard">
     <AdminNav/> 
-    <v-container class="my-2">
-      <h2 class="subheading my-5 user-color">Users</h2>
+    <v-container>
+      <h2 class="subheading my-5 user-color">USERS</h2>
+
+       <v-snackbar v-model="snackbar" :timeout="4000" top color="success">
+                  <span>Users status successfully updated ..</span>
+                     <v-btn text color="white" @click="snackbar = false">Close</v-btn>
+                </v-snackbar>
     <v-row>
           <v-col
             cols="12"
             sm="6"
+            xs="6"
             md="8">
-        <h4 v-for="total in count" :key="total.id">Total: {{total.NumberOfUsers}}</h4>
+        <h3 v-for="total in count" :key="total.id" class="user-color">Total: {{Users.length}}</h3>
 
     </v-col>
      <v-col
             cols="12"
             sm="6"
+            xs="6"
             md="4">
         
             <!-- dropdown -->
@@ -56,31 +63,38 @@
 </v-row>
 
 <div>
-<v-card class="pa-3 mt-2" v-for="project in Users" v-bind:key="project.title">
+<v-card class="pa-3 mt-2 elevation-0" v-for="project in Users" v-bind:key="project.title" >
         <v-layout row wrap class="pa-3">
-          <v-flex xs12 md6>
-            <div class="caption grey--text">
+          <v-flex xs12 md2>
+            <div class="caption user-color">
               Username</div>
-              <div>{{project.UserName}}</div>
+              <div class="my-6">{{project.UserName}}</div>
           </v-flex>
           <v-flex xs6 sm6 md4>
-            <div class="caption grey--text">Names</div>
-            <div>{{project.FirstName}} {{project.LastName}}</div>
+              <div class="caption user-color">Names</div>
+        <div class="my-6">{{project.FirstName}} {{project.LastName}}</div>
           </v-flex>
           <v-flex xs6 sm6 md2>
-            <div class="caption grey--text">Phone Number</div>
-            <div>{{project.PhoneNumber}}</div>
+            <div class="caption user-color">Phone Number</div>
+            <div class="my-6">{{project.PhoneNumber}}</div>
+          </v-flex>
+            <v-flex xs6 sm6 md2>
+            <div class="caption user-color">Status</div>
+            <v-switch v-model="project.isActive" :label="'Active'" @change="changeState(project.Staff_Id)"></v-switch>
+          </v-flex>
+           <v-flex xs6 sm6 md2>
+            <v-btn small text class="my-9" color="#1976D2" @click="viewMore(project.Staff_Id)">View details</v-btn>
           </v-flex>
         </v-layout>
       </v-card>
   </div>
-
+<!-- 
   <div class="text-center mt-5">
     <v-pagination
       v-model="page"
       :length="6">
       </v-pagination>
-  </div>
+  </div> -->
       
 
     </v-container>
@@ -98,13 +112,14 @@ export default {
     data(){
       return{
             total: 10,
-            switch1: true,
-             page: 1,     
+            switch1: 1,
+             page: 1, 
+             snackbar: false    
             }
         },
         computed:{
           Users(){
-            return this.$store.state.users
+            return this.$store.state.allusers
           },
           inactive(){
             return this.$store.state.inactive
@@ -114,6 +129,27 @@ export default {
           }
         },
         methods:{
+          changeState(id){
+              this.$store.dispatch("ToggleUser",id)
+              .then((success)=>{
+                console.log(success);
+                this.snackbar = true;
+              })
+              .catch((error)=>{
+                console.log(error);
+              })
+          },
+          viewMore(id){
+            alert(id);
+            this.$store.dispatch("UserById",id)
+            .then((success)=>{
+              console.log(success)
+               this.$router.push(`/viewusers/${id}`)
+            })
+            .catch((error)=>{
+              console.log(error);
+            })   
+          },
           Inactive(){
           this.$store.dispatch('InactiveUsers')
             .then((success)=>{
@@ -125,7 +161,7 @@ export default {
       })
     },
     AllUsers(){
-      this.$store.dispatch('View')
+      this.$store.dispatch('ViewAll')
        .then((success)=>{
             console.log(success);
            })
@@ -170,6 +206,15 @@ export default {
       });
     },
 
+  },
+  created(){
+    this.$store.dispatch('ViewAll')
+      .then((success)=>{
+        console.log(success);
+       })
+      .catch((error)=>{
+        console.log(error);
+      })
   }
     
 }
@@ -180,7 +225,11 @@ export default {
     color: #5F5D5D;
 }
 .user-color{
-     color:#013919;
+     color:#5F5D5D;
 }
-
+.dashboard{
+  background-color: #CAD8E6;
+  background-size: cover;
+  height: 100%;
+}
 </style>

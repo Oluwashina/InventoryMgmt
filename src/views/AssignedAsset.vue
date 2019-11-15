@@ -2,15 +2,15 @@
  <div class="make">
          <UsersNav/>
     <v-container>
-        <h2 class="subheading mx-5 my-2 request-color">View Assets</h2>
+        <h2 class="subheading mx-5 my-4 request-color">VIEW ASSETS</h2>
 
 
-      <v-card> 
-    <v-tabs color="#013919">
+      <v-card class="my-6"> 
+    <v-tabs color="#1976D2">
         <v-tab>View Assigned Assets
         </v-tab>
          <v-tab>
-             View Public Assets
+             View Available Assets
          </v-tab>
          <!-- first tab -->
          <v-tab-item>
@@ -18,7 +18,8 @@
                  <v-data-table
                     v-model="selected"
                     :headers="headers"
-                    :items="desserts"
+                    :items="Assigned"
+                    :items-per-page="5"
                     :single-select="singleSelect"
                     item-key="name"
                     :search="search"
@@ -54,8 +55,8 @@
 
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="#013919" text @click="close">Cancel</v-btn>
-              <v-btn color="#013919" text @click="save">Save</v-btn>
+              <v-btn color="#1976D2" text @click="close">Cancel</v-btn>
+              <v-btn color="#1976D2" text @click="save">Save</v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
@@ -66,7 +67,7 @@
                 </template>
 
                   <template v-slot:item.action="{ item }">
-                      <v-btn color="#013919" text v-on:click="editItem(item)">Edit status
+                      <v-btn color="#1976D2" text v-on:click="editItem(item)">Edit status
                     <v-icon small right>edit</v-icon>
                     </v-btn>
                   </template>
@@ -81,9 +82,10 @@
                  <v-data-table
                     v-model="selected"
                     :headers="headers1"
-                    :items="desserts1"
+                    :items="Assets"
                     :single-select="singleSelect"
                     item-key="name"
+                    :items-per-page="5"
                     :search="search"
                     class="elevation-1"
                 >
@@ -114,6 +116,7 @@ export default {
     data(){
         return{
             singleSelect: false,
+            user: "Oremskii",
             countries: ["Good","Bad","Okay"],
             selected: [],
              search: '',
@@ -127,15 +130,14 @@ export default {
                     },
              headers: [
                  {
-                    text: 'Asset ID',
+                    text: 'Name',
                     align: 'left',
                     sortable: false,
                     value: 'name',
                   },
-                    { text: 'Asset Description', value: 'asset' },
+                    { text: 'Description', value: 'asset' },
                     { text: 'Quantity', value: 'quantity' },
-                    { text: 'Type', value: 'type' },
-                    { text: 'Status', value: 'status' },
+                    { text: 'Status', value: 'Status', sortable: false },
                     { text: '', value: 'action', sortable: false },
                 ],
                  desserts: [
@@ -166,16 +168,13 @@ export default {
                 ],
                  headers1: [
                  {
-                    text: 'Asset ID',
+                    text: 'Name',
                     align: 'left',
                     sortable: false,
-                    value: 'name',
+                    value: 'item_Name',
                   },
-                    { text: 'Asset Description', value: 'asset' },
-                    { text: 'Quantity', value: 'quantity' },
-                    { text: 'Type', value: 'type' },
-                    { text: 'Status', value: 'status' },
-                    { text: '', value: 'action', sortable: false },
+                    { text: 'Description', value: 'item_Desc' },
+                    { text: 'Quantity', value: 'Quantity' },
                 ],
                 desserts1: [
                     {
@@ -218,6 +217,15 @@ export default {
       formTitle () {
         return this.editedIndex === -1 ? 'New Asset' : 'Edit Status'
       },
+      Assets(){
+        return this.$store.state.assets
+      },
+      Username(){
+        return this.$store.state.username
+      },
+      Assigned(){
+        return this.$store.state.assigned
+      }
     },
      watch: {
       dialog (val) {
@@ -252,6 +260,22 @@ export default {
         }
         this.close()
       },
+     },
+     created(){
+        this.$store.dispatch("ViewAssets")
+      .then((success)=>{
+        console.log(success);
+      })
+      .catch((error)=>{
+        console.log(error);
+      });
+      this.$store.dispatch("AssignedAssets",this.$store.state.username[0].UserName)
+      .then((success)=>{
+        console.log(success);
+      })
+      .catch((error)=>{
+        console.log(error);
+      });
      }
     
 }
@@ -260,7 +284,10 @@ export default {
 
 <style scoped>
 .request-color{
-     color:#013919;
+     color:#5F5D5D;
 }
-
+.make{
+  background-color: #CAD8E6;
+  height: 100vh;
+}
 </style>

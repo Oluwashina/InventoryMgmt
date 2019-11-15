@@ -6,7 +6,7 @@
 
     <v-card color="#E1FFEE">
           <v-card-text>
-            <p class="asset-color">
+            <p class="" style="color: #5F5D5D; font-size: 18px; font-weight: bold;">
            Selected Assets
             </p>
           </v-card-text>
@@ -15,17 +15,23 @@
           <v-col
             cols="12"
             sm="6"
-            md="6">
+            md="6" v-for="asset in Selected" :key="asset.id">
             
    <v-card
-    class="elevation-8 mx-5"
+    class="elevation-9 mx-5"
     color="#ffffff"
     >
     <v-list-item three-line >
       <v-list-item-content>
           <v-card-text>
-              <h3 class="request-color">Printer</h3>
-              <h4 class="request-color" style="margin-top:20px;">Hp Laserjet Printer 250E-series</h4>
+              <h3 class="" style="color: #5F5D5D;">{{asset.item_Name}}</h3>
+              <h5 class="" style="margin-top:15px; color: #5F5D5D;">{{asset.item_Desc}}</h5>
+              <!-- <h3 class="">Quantity: {{asset.Quantity}}</h3> -->
+              <v-text-field
+                        v-model="quantity"
+                        type="text" 
+                            ></v-text-field>
+
           </v-card-text>
       </v-list-item-content>
 
@@ -36,41 +42,8 @@
          fab
          v-on="on"
          class="btn-adjust"
-        v-on:click="select()"
               >
-        <v-icon color="#013919">{{icon}}</v-icon>
-        </v-btn>
-      </v-list-item-content>
-    </v-list-item>
-   </v-card>
-
-          </v-col>
-          <v-col
-            cols="12"
-            sm="6"
-            md="6">
-             <v-card
-    class="elevation-8 mx-5"
-    color="#ffffff" 
-    >
-    <v-list-item three-line >
-      <v-list-item-content>
-          <v-card-text>
-              <h3 class="request-color">Laptop</h3>
-              <h4 class="request-color" style="margin-top:20px;">Apple Macbook airPro 2017</h4>
-          </v-card-text>
-      </v-list-item-content>
-
-      <v-list-item-content >
-        <v-btn
-         small
-         absolute
-         fab
-         v-on="on"
-         class="btn-adjust"
-          v-on:click="select()"
-              >
-        <v-icon color="#013919">{{icon}}</v-icon>
+        <v-icon color="#5F5D5D">{{icon}}</v-icon>
         </v-btn>
       </v-list-item-content>
     </v-list-item>
@@ -92,6 +65,7 @@
           name="input-7-4"
           label="Write a comment"
           class="mx-5 my-n8"
+          v-model="comment"
           auto-grow
         ></v-textarea>
 
@@ -99,7 +73,7 @@
                </v-row>
 
                <v-card-text class="text-center">
-                <v-btn color="#013919" class="white--text">Make Request
+                <v-btn color="#013919" class="white--text" v-on:click="Request()">Make Request
                 </v-btn>
               </v-card-text>
          
@@ -122,9 +96,38 @@ export default {
     },
     data(){
         return{
-             icon: 'mdi-check'
+             icon: 'mdi-check',
+             comment: '',
+             quantity: this.$store.state.select[0].Quantity
 
         }
+    },
+    methods:{
+      Request(){
+        alert(this.$store.state.select[0].item_id)
+        this.$store.dispatch("MakeRequest",{
+          "staffUsername": this.$store.state.username[0].UserName,
+          "comment": this.comment,
+          "items": [
+            {
+              "quantity": this.quantity,
+              "itemId": this.$store.state.select[0].item_id
+            }
+          ]
+        })
+        .then((success)=>{
+          console.log(success);
+        })
+        .catch((error)=>{
+          console.log(error);
+        })
+      }
+
+    },
+    computed:{
+      Selected(){
+        return this.$store.state.select
+      }
     }
 }
 </script>
@@ -132,16 +135,16 @@ export default {
 
 <style scoped>
 .request-color{
-     color:#013919;
+     color:#5F5D5D;
 }
 .asset-color{
-    color: #013919;
+    color: #5F5D5D;
     font-size: 18px;
     font-weight: bold;
 }
 .btn-adjust{
     margin-left: 100px;
-    border: 2px solid #013919;
+    border: 2px solid #5F5D5D;
     color: #ffffff;
     background: none;
 }

@@ -16,7 +16,7 @@
           >
             <v-card class="elevation-10"  color="rgba(255, 255, 255, 0.8)">
                 <v-card-text class="text-center">
-                <v-img src="/LogoSvg.svg" max-width="100"
+                <v-img src="/Icon125.svg" max-width="100"
       max-height="100" aspect-ratio="1" class="mx-auto"></v-img>
                 </v-card-text>
                 <v-snackbar v-model="snackbar" :timeout="4000" top color="error">
@@ -29,8 +29,7 @@
                     label="Username"
                     v-model="username"
                     prepend-inner-icon="mdi-account"
-                    type="text" single-line outlined
-                    color="#013919"  
+                    type="text" single-line outlined 
                   ></v-text-field>
 
                   <v-text-field
@@ -39,7 +38,6 @@
                     v-model="password"
                     prepend-inner-icon="mdi-lock"
                    single-line outlined
-                    color="#013919"
                     :append-icon="show1 ? 'visibility' : 'visibility_off'"
                     :type="show1 ? 'text' : 'password'"
                     @click:append="show1 = !show1"
@@ -47,12 +45,12 @@
                 </v-form>
               </v-card-text>
               <v-card-text class="text-center">
-                <v-btn color="#013919" class="white--text" v-on:click="login()">Login
+                <v-btn color="#1976D2" class="white--text" v-on:click="login()">Login
                     <v-icon right>mdi-login</v-icon>
                 </v-btn>
               </v-card-text>
               <v-card-text class="text-center">
-                  <v-btn text color="#013919" class="forgotSize" router-link to="/forgot">Forgot Password? Click HERE</v-btn>
+                  <v-btn text color="#1976D2" class="forgotSize" router-link to="/forgot">Forgot Password? Click HERE</v-btn>
               </v-card-text>
             </v-card>
           </v-col>

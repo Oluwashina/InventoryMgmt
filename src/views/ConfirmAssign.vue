@@ -1,5 +1,5 @@
 <template>
-    <div class="admin">
+ <div class="admin">
    <StoreNav/>
    <v-container>
         <v-row>
@@ -7,10 +7,11 @@
             cols="12"
             sm="6"
             md="10">
-  <h2 class="subheading mx-5 my-5 header-color">ASSIGN ASSET</h2>
+
+     <h2 class="subheading mx-5 my-5 header-color">ASSIGN ASSET</h2>
           </v-col>
 
-           <v-col
+          <v-col
             cols="12"
             sm="6"
             md="2">
@@ -18,8 +19,8 @@
            </v-col>
 
         </v-row>
-    
-   <v-tabs>
+
+         <v-tabs>
         <v-tab><v-icon>search</v-icon>
         </v-tab>
          <v-tab><v-icon>mdi-format-list-bulleted
@@ -29,27 +30,27 @@
         <v-card color="#E1FFEE">
           <v-card-text>
             <p class="asset-color">
-            Search asset to Assign
+            Search User
             </p>
-             <v-text-field placeholder="Dell, Hp printer, Screw Driver" prepend-inner-icon="mdi-magnify"></v-text-field>
+             <v-text-field placeholder="Ore..." prepend-inner-icon="mdi-magnify"></v-text-field>
           </v-card-text>
 
            <v-card-text class="text-right">
-                <v-btn color="#1976D2" class="white--text"  router-link to="/confirmassign">Continue
+                <v-btn color="#013919" class="white--text" >Continue
                     <v-icon right>mdi-chevron-right</v-icon>
                 </v-btn>
               </v-card-text>
 
         </v-card>
         </v-tab-item>
-       
-       <!-- second tab -->
-       
-             <v-tab-item>
+
+        <!-- second tab -->
+
+          <v-tab-item>
         <v-card color="#E1FFEE">
           <v-card-text>
             <p class="asset-color">
-            Select asset to assign
+            Select User
             </p>
           </v-card-text>
 
@@ -66,9 +67,8 @@
     <v-list-item three-line >
       <v-list-item-content>
           <v-card-text>
-              <h3 class="request-color">Printer</h3>
-              <h4 class="request-color" style="margin-top:20px;">Hp Laserjet Printer 250E-series</h4>
-              <h4 class="quantity-color">Quantity:<v-text-field type="number" class="mt-n2"></v-text-field></h4>
+              <h3 class="request-color">Oremei Akande</h3>
+              <p class="request-color" style="margin-top:20px;">Admin</p>
           </v-card-text>
       </v-list-item-content>
 
@@ -99,9 +99,8 @@
     <v-list-item three-line >
       <v-list-item-content>
           <v-card-text>
-              <h3 class="request-color">Desktop</h3>
-              <h4 class="request-color" style="margin-top:20px;">Dell Inspiron 15 7000 series</h4>
-              <h4 class="quantity-color">Quantity:<v-text-field type="number" class="mt-n2"></v-text-field></h4>
+              <h3 class="request-color">Ojo Oluwashina</h3>
+              <p class="request-color" style="margin-top:20px;">Admin</p>
           </v-card-text>
       </v-list-item-content>
 
@@ -114,7 +113,7 @@
          class="btn-adjust"
           v-on:click="select()"
               >
-        <v-icon color="#5F5D5D">{{icon}}</v-icon>
+        <v-icon color="#013919">{{icon}}</v-icon>
         </v-btn>
       </v-list-item-content>
     </v-list-item>
@@ -137,9 +136,8 @@
     <v-list-item three-line >
       <v-list-item-content>
           <v-card-text>
-              <h3 class="request-color">Laptop</h3>
-              <h4 class="request-color" style="margin-top:20px;">Hp Laserjet Printer 250E-series</h4>
-            <h4 class="quantity-color">Quantity:<v-text-field type="number" class="mt-n2"></v-text-field></h4>
+              <h3 class="request-color">Alaka Olasumbo</h3>
+              <p class="request-color" style="margin-top:20px;">User</p>
           </v-card-text>
       </v-list-item-content>
 
@@ -152,7 +150,7 @@
          class="btn-adjust"
           v-on:click="select()"
               >
-        <v-icon color="#5F5D5D">{{icon}}</v-icon>
+        <v-icon color="#013919">{{icon}}</v-icon>
         </v-btn>
       </v-list-item-content>
     </v-list-item>
@@ -170,9 +168,8 @@
     <v-list-item three-line >
       <v-list-item-content>
           <v-card-text>
-              <h3 class="request-color">Desktop</h3>
-              <h4 class="request-color" style="margin-top:20px;">Hp Laserjet Printer 250E-series</h4>
-            <h4 class="quantity-color">Quantity:<v-text-field type="number" class="mt-n2"></v-text-field></h4>
+              <h3 class="request-color">Akindotun Richard</h3>
+              <p class="request-color" style="margin-top:20px;">User</p>
           </v-card-text>
       </v-list-item-content>
 
@@ -185,7 +182,7 @@
          class="btn-adjust"
           v-on:click="select()"
               >
-        <v-icon color="#5F5D5D">{{icon}}</v-icon>
+        <v-icon color="#013919">{{icon}}</v-icon>
         </v-btn>
       </v-list-item-content>
     </v-list-item>
@@ -208,9 +205,8 @@
     <v-list-item three-line >
       <v-list-item-content>
           <v-card-text>
-              <h3 class="request-color">Laptop</h3>
-              <h4 class="request-color" style="margin-top:20px;">Hp Laserjet Printer 250E-series</h4>
-            <h4 class="quantity-color">Quantity:<v-text-field type="number" class="mt-n2"></v-text-field></h4>
+              <h3 class="request-color">Olubunmi Praise</h3>
+              <p class="request-color" style="margin-top:20px;">Storekeeper</p>
           </v-card-text>
       </v-list-item-content>
 
@@ -223,7 +219,7 @@
          class="btn-adjust"
           v-on:click="select()"
               >
-        <v-icon color="#5F5D5D">{{icon}}</v-icon>
+        <v-icon color="#013919">{{icon}}</v-icon>
         </v-btn>
       </v-list-item-content>
     </v-list-item>
@@ -241,9 +237,8 @@
     <v-list-item three-line >
       <v-list-item-content>
           <v-card-text>
-              <h3 class="request-color">Printer</h3>
-              <h4 class="request-color" style="margin-top:20px;">Hp Laserjet Printer 250E-series</h4>
-            <h4 class="quantity-color">Quantity:<v-text-field type="number" class="mt-n2"></v-text-field></h4>
+              <h3 class="request-color">Folalu Timothy</h3>
+              <p class="request-color" style="margin-top:20px;">User</p>
           </v-card-text>
       </v-list-item-content>
 
@@ -256,7 +251,7 @@
          class="btn-adjust"
           v-on:click="select()"
               >
-        <v-icon color="#5F5D5D">{{icon}}</v-icon>
+        <v-icon color="#013919">{{icon}}</v-icon>
         </v-btn>
       </v-list-item-content>
     </v-list-item>
@@ -266,58 +261,56 @@
           </v-row>
           
            <v-card-text class="text-right">
-                <v-btn color="#1976D2" class="white--text" router-link to="/confirmassign">Continue
+                <v-btn color="#013919" class="white--text" router-link to="/confirmassign">Continue
                     <v-icon right>mdi-chevron-right</v-icon>
                 </v-btn>
               </v-card-text>
 
         </v-card>
         </v-tab-item>
-    </v-tabs>
+
+
+
+
+
+         </v-tabs>
    </v-container>
-    </div>
+ </div>
+
+
 </template>
 
 
 <script>
 import StoreNav from '../components/StoreNav'
 export default {
-    components:{
+      components:{
         StoreNav
     },
     data(){
         return{
-            icon: 'mdi-plus',
             count: 0,
+            icon: 'mdi-plus',
             icon1: 'mdi-plus'
-        }
-    },
-    methods: {
-        select(){
-            if(this.icon1 == "mdi-plus"){
-                 this.icon1 = 'mdi-check'
-                 this.count +=1
-            }
-            else{
-                this.icon1 = 'mdi-plus'
-                this.count -=1
-            }
+
         }
     }
+    
 }
 </script>
 
 
+
 <style scoped>
 .header-color{
-     color:#1976D2;
+     color:#013919;
 }
 .quantity-color{
-    color: #5F5D5D;
+    color: #013919;
     margin-top: 10px;
 }
 .request-color{
-     color: #5F5D5D;
+     color:#013919;
 }
 .asset-color{
     color: #5F5D5D;
@@ -325,9 +318,8 @@ export default {
 }
 .btn-adjust{
     margin-left: 100px;
-    border: 2px solid #5F5D5D;
+    border: 2px solid #013919;
     color: #ffffff;
     background: none;
 }
-
 </style>
