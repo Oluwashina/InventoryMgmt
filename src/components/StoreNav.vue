@@ -18,9 +18,14 @@
       <v-btn icon class="white--text">
         <v-icon>mdi-apps</v-icon>
       </v-btn>
-      <v-btn icon class="white--text">
-        <v-icon>mdi-bell</v-icon>
-      </v-btn>
+      <v-badge color="red" overlap left>
+      <template v-slot:badge>
+        <span v-for="notify in Bell" :key="notify.id">{{notify.NumberOfNotifications}}</span>
+      </template>
+      <v-btn dark class="white--text" small flat icon router-link to="/notifications">
+       <v-icon>mdi-bell</v-icon>
+        </v-btn>
+    </v-badge>
        <v-btn icon class="white--text" router-link to="/">
         <v-icon>mdi-logout</v-icon>
       </v-btn>
@@ -46,8 +51,9 @@
        </v-flex>
            <v-layout column align-center>
               <v-flex class="mt-6">
-                  <v-avatar size="80" class="avatarC">
-                      <v-icon large color="#1976D2">mdi-account</v-icon>
+                  <v-avatar size="80" class="avatarC" v-for="user in Images" :key="user.id">
+                      <!-- <v-icon large color="#1976D2">mdi-account</v-icon> -->
+                      <v-img class="" size="20px" aspect-ratio="1" :src="getImgUrl(user.Image)" alt="/account.png" lazy-src="/account.png"></v-img>
                   </v-avatar>
               </v-flex>
           </v-layout>
@@ -74,12 +80,9 @@
               </v-list-item>
           </v-list>
           <v-list class="mt-12 ml-6">
-            <span>Theme</span>
-                    <v-switch
-                      v-model="$vuetify.theme.dark"
-                      primary
-                      label="Dark"
-                    ></v-switch>
+            <v-btn color="#1976D2" text class="ml-6 mb-4" router-link to="/">Sign Out
+              <v-icon right>mdi-logout</v-icon>
+            </v-btn>
           </v-list>
       </v-navigation-drawer>
     </nav> 
@@ -91,6 +94,7 @@ export default {
      return{
            right: null,
            drawer: true,
+           messages: 5,
             items:[
               {
                 title: 'DASHBOARD',
@@ -115,7 +119,7 @@ export default {
               {
                 title: 'GENERATE REPORT',
                 icon: 'mdi-clipboard-text',
-                route: '/'
+                route: '/report'
               },
               {
                 title: 'UPDATE PROFILE',
@@ -131,6 +135,12 @@ export default {
     },
     Username(){
       return this.$store.state.username
+    },
+    Bell(){
+      return this.$store.state.bell
+    },
+     Images(){
+      return this.$store.state.usersbyid
     }
   },
   methods:{
@@ -145,6 +155,10 @@ export default {
         this.$router.push('/users')
       }
     },
+     getImgUrl(pic) {
+            let weblink = "http://192.168.1.107:3000/images/users/";
+            return weblink+pic;
+    },
   },
   created(){
     this.$store.dispatch("UserName",this.$store.state.logindata.Staff_Id)
@@ -153,6 +167,20 @@ export default {
     })
     .catch((error)=>{
       console.log(error)
+    })
+    this.$store.dispatch("BellCount")
+    .then((success)=>{
+      console.log(success)
+    })
+    .catch((error)=>{
+      console.log(error);
+    })
+    this.$store.dispatch("UserById",this.$store.state.username[0].Staff_Id)
+    .then((success)=>{
+      console.log(success)
+    })
+    .catch((error)=>{
+      console.log(error);
     })
   }
 }

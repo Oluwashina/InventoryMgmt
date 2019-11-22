@@ -3,10 +3,14 @@
          <UsersNav/>
     <v-container>
         <h2 class="subheading mx-5 my-2 request-color">Make Request</h2>
+        <v-snackbar v-model="snackbar" :timeout="4000" top color="success">
+                  <span>Request successfully made.</span>
+                     <v-btn text color="white" @click="snackbar = false">Close</v-btn>
+                </v-snackbar>
 
-    <v-card color="#E1FFEE">
+    <v-card color="white">
           <v-card-text>
-            <p class="" style="color: #5F5D5D; font-size: 18px; font-weight: bold;">
+            <p class="my-4" style="color: #5F5D5D; font-size: 18px; font-weight: bold;">
            Selected Assets
             </p>
           </v-card-text>
@@ -24,12 +28,14 @@
     <v-list-item three-line >
       <v-list-item-content>
           <v-card-text>
-              <h3 class="" style="color: #5F5D5D;">{{asset.item_Name}}</h3>
-              <h5 class="" style="margin-top:15px; color: #5F5D5D;">{{asset.item_Desc}}</h5>
+              <h3 class="" style="color:#1976D2;">{{asset.item_Name}}</h3>
+              <h4 class="" style="margin-top:15px; color: #1976D2;">{{asset.item_Desc}}</h4>
               <!-- <h3 class="">Quantity: {{asset.Quantity}}</h3> -->
               <v-text-field
-                        v-model="quantity"
-                        type="text" 
+                        v-model="asset.Quantity"
+                        type="text" outlined dense
+                        label="Quantity" class="mt-5"
+                         color="#5F5D5D" 
                             ></v-text-field>
 
           </v-card-text>
@@ -73,7 +79,7 @@
                </v-row>
 
                <v-card-text class="text-center">
-                <v-btn color="#013919" class="white--text" v-on:click="Request()">Make Request
+                <v-btn color="#1976D2" class="white--text" v-on:click="Request(Selected)">Make Request
                 </v-btn>
               </v-card-text>
          
@@ -98,25 +104,32 @@ export default {
         return{
              icon: 'mdi-check',
              comment: '',
-             quantity: this.$store.state.select[0].Quantity
+             quantity: '',
+             snackbar: false
 
         }
     },
     methods:{
-      Request(){
-        alert(this.$store.state.select[0].item_id)
+      Request(qty){
+        console.log(qty)
+        const items = []
+        for(var j in qty){
+          const itemId = qty[j].item_id
+          const quantity = qty[j].Quantity
+          console.log(itemId);
+          console.log(quantity);
+          items.push({itemId,quantity})
+          console.log(items);
+        }
         this.$store.dispatch("MakeRequest",{
           "staffUsername": this.$store.state.username[0].UserName,
           "comment": this.comment,
-          "items": [
-            {
-              "quantity": this.quantity,
-              "itemId": this.$store.state.select[0].item_id
-            }
-          ]
+          "items": items
         })
         .then((success)=>{
           console.log(success);
+          this.snackbar = true;
+          this.$router.push('/users')
         })
         .catch((error)=>{
           console.log(error);
@@ -147,5 +160,10 @@ export default {
     border: 2px solid #5F5D5D;
     color: #ffffff;
     background: none;
+}
+.make{
+    background-color: #CAD8E6;
+    height: 100%;
+    background-size: cover;
 }
 </style>

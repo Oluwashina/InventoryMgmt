@@ -121,6 +121,7 @@ export default {
 }
 .users{
   background-color: #CAD8E6;
-  height: 100vh;
+  height: 100%;
+  background-size: cover;
 }
 </style>

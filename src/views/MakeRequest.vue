@@ -7,14 +7,14 @@
             cols="12"
             sm="6"
             md="10">
-  <h2 class="subheading mx-5 my-5 header-color">Make Request</h2>
+  <h2 class="subheading mx-5 my-3 header-color">Make Request</h2>
           </v-col>
 
            <v-col
             cols="12"
             sm="6"
             md="2">
-            <v-btn class="mx-5 my-5">{{request.length}} Selected</v-btn>
+            <v-btn class="mx-5 my-3">{{request.length}} Selected</v-btn>
            </v-col>
 
         </v-row>
@@ -26,33 +26,32 @@
         </v-icon></v-tab>
             <!-- first tab  -->
         <v-tab-item>
-        <v-card color="#E1FFEE">
+        <v-card color="white">
           <v-card-text>
             <p class="asset-color">
             Search Asset to request
             </p>
              <v-autocomplete placeholder="Search" v-model="request" :items="Assets" item-text="item_Name"
-                        item-value="item_Name" clearable prepend-inner-icon="search" multiple
+                        item-value="item_Name" clearable prepend-inner-icon="search" multiple chips
                         @change="selectedcount()" hide-selected="true" :return-object="true"
                         no-data-text="Please kindly select from the assets available"
                         >
-                        <!-- <template v-slot:item="data">
+                        <template v-slot:item="data">
                            <template v-if="typeof data.item !== 'object'">
                               <v-list-item-content v-text="data.item"></v-list-item-content>
                             </template>
                           <v-list-item-content>
                              <v-list-item-title v-html="data.item.item_Name"></v-list-item-title>
                              <v-list-item-subtitle v-html="data.item.item_Desc"></v-list-item-subtitle>
-                             <v-list-item-subtitle v-html="data.item.Quantity"></v-list-item-subtitle>
                            </v-list-item-content>
-                        </template> -->
+                        </template>
              </v-autocomplete>
 
           </v-card-text>
 
            <v-card-text class="text-right">
              
-                <v-btn color="#013919" class="white--text"  v-on:click="cont()">Continue
+                <v-btn color="#1976D2" class="white--text"  v-on:click="cont()">Continue
                     <v-icon right>mdi-chevron-right</v-icon>
                 </v-btn>
               </v-card-text>
@@ -63,9 +62,9 @@
        <!-- second tab -->
        
              <v-tab-item>
-        <v-card color="#E1FFEE">
+        <v-card color="white">
           <v-card-text>
-            <p class="asset-color">
+            <p class="asset-color my-3">
             Select Asset to request
             </p>
           </v-card-text>
@@ -77,7 +76,7 @@
             md="6" v-for="assets in Assets" :key="assets.id">
             
    <v-card
-    class="elevation-8 mx-5"
+    class="elevation-3 mx-5"
     color="#ffffff"
     >
     <v-list-item three-line >
@@ -89,16 +88,19 @@
       </v-list-item-content>
 
       <v-list-item-content >
-       <v-btn
+       <!-- <v-btn
          small
          absolute
          fab
          v-on="on"
          class="btn-adjust"
-        v-on:click="select()"
+        v-on:click="select(assets.item_id, Assets)"
               >
-        <v-icon color="#013919">{{icon}}</v-icon>
-        </v-btn>
+        <v-icon color="#5F5D5D">{{icon}}</v-icon>
+        </v-btn> -->
+        <v-checkbox multiple
+      v-model="checkbox" @change="check($event)" :value="assets.item_id"
+    ></v-checkbox>
       </v-list-item-content>
     </v-list-item>
    </v-card>
@@ -108,7 +110,7 @@
           </v-row>
           
            <v-card-text class="text-right">
-                <v-btn color="#013919" class="white--text" router-link to="/selectedasset">Continue
+                <v-btn color="#1976D2" class="white--text" router-link to="/selectedasset">Continue
                     <v-icon right>mdi-chevron-right</v-icon>
                 </v-btn>
               </v-card-text>
@@ -132,18 +134,26 @@ export default {
     data(){
         return{
             icon: 'mdi-plus',
-            request: '',
+            request: [],
+            checkbox: false
         }
     },
     methods:{
-        select(){
-            if(this.icon == "mdi-plus"){
-                 this.icon = 'mdi-check'
-                 this.count +=1
+        select(id, items){
+          alert(id);
+          console.log(items)
+          for(var j in items){
+            if(id === items[j].item_id){
+              // this.icon = 'mdi-check'
+              this.request++
+              console.log(id);
             }
-            else{
-                this.icon = 'mdi-plus'
-            }
+
+          }    
+        },
+        check(id){
+          console.log(id)
+          this.checkbox = false
         },
         selectedcount(){
           console.log(this.request)
@@ -176,7 +186,7 @@ export default {
 
 <style scoped>
 .request-color{
-     color:#013919;
+     color:#1976D2;
 }
 .asset-color{
     color: #5F5D5D;
@@ -184,8 +194,16 @@ export default {
 }
 .btn-adjust{
     margin-left: 100px;
-    border: 2px solid #013919;
+    border: 2px solid #5F5D5D;
     color: #ffffff;
     background: none;
+}
+.header-color{
+  color: #5F5D5D;
+}
+.make{
+    background-color: #CAD8E6;
+    height: 100%;
+    background-size: cover;
 }
 </style>

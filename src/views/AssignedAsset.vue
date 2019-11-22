@@ -3,7 +3,10 @@
          <UsersNav/>
     <v-container>
         <h2 class="subheading mx-5 my-4 request-color">VIEW ASSETS</h2>
-
+  <v-snackbar v-model="snackbar" :timeout="4000" top color="success">
+                  <span>Thank you for the feedback. We will kindly review this and update you...</span>
+                     <v-btn text color="white" @click="snackbar = false">Close</v-btn>
+                </v-snackbar>
 
       <v-card class="my-6"> 
     <v-tabs color="#1976D2">
@@ -45,9 +48,18 @@
                        <v-autocomplete
                         v-model="editedItem.status"
                         :items="countries"
-                        label="Status"
+                        label="Status" solo
                         placeholder="Select..."
                          ></v-autocomplete>
+                  </v-col>
+                  <v-col cols="12" sm="12" md="12">
+                    <v-textarea
+                      solo
+                      name="input-7-4"
+                      label="Write a comment"
+                      v-model="comment"
+                      auto-grow
+                        ></v-textarea>
                   </v-col>
                 </v-row>
               </v-container>
@@ -56,7 +68,7 @@
             <v-card-actions>
               <v-spacer></v-spacer>
               <v-btn color="#1976D2" text @click="close">Cancel</v-btn>
-              <v-btn color="#1976D2" text @click="save">Save</v-btn>
+              <v-btn color="#1976D2" text @click="save(item)">Submit</v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
@@ -117,7 +129,8 @@ export default {
         return{
             singleSelect: false,
             user: "Oremskii",
-            countries: ["Good","Bad","Okay"],
+            snackbar: false,
+            countries: ["Good","Bad","Repair"],
             selected: [],
              search: '',
               dialog: false,
@@ -133,9 +146,9 @@ export default {
                     text: 'Name',
                     align: 'left',
                     sortable: false,
-                    value: 'name',
+                    value: 'Item_Name',
                   },
-                    { text: 'Description', value: 'asset' },
+                    { text: 'Description', value: 'Item_Desc' },
                     { text: 'Quantity', value: 'quantity' },
                     { text: 'Status', value: 'Status', sortable: false },
                     { text: '', value: 'action', sortable: false },
@@ -209,13 +222,15 @@ export default {
                         status: 'Bad',
                         time: '21 hours ago',
                     },
-                ]
+                ],
+                ideal: '',
+                comment: ''
 
         }
     },
      computed: {
       formTitle () {
-        return this.editedIndex === -1 ? 'New Asset' : 'Edit Status'
+        return this.editedIndex === -1 ? 'Edit Status' : ''
       },
       Assets(){
         return this.$store.state.assets
@@ -224,7 +239,7 @@ export default {
         return this.$store.state.username
       },
       Assigned(){
-        return this.$store.state.assigned
+        return this.$store.state.assigned.items
       }
     },
      watch: {
@@ -240,9 +255,11 @@ export default {
         else return 'red'
       },
       editItem(item) {
-        this.editedIndex = this.desserts.indexOf(item)
-        this.editedItem = Object.assign({}, item)
+        // this.editedIndex = this.desserts.indexOf(item)
+        // this.editedItem = Object.assign({}, item)
         this.dialog = true
+        alert(item.id)
+        this.ideal = item.id
       },
        close() {
         this.dialog = false
@@ -253,12 +270,22 @@ export default {
       },
 
       save(){
-        if (this.editedIndex > -1) {
-          Object.assign(this.desserts[this.editedIndex], this.editedItem)
-        } else {
-          this.desserts.push(this.editedItem)
-        }
-        this.close()
+        alert(this.ideal)
+        console.log(this.editedItem.status)
+        console.log(this.comment)
+        this.$store.dispatch("UpdateAssetStatus",{
+          "eventId": this.ideal,
+          "status": this.editedItem.status,
+          "comment": this.comment
+        })
+        .then((success)=>{
+          console.log(success)
+          this.snackbar = true;
+           this.close()
+        })
+        .catch((error)=>{
+          console.log(error);
+        }) 
       },
      },
      created(){
@@ -288,6 +315,7 @@ export default {
 }
 .make{
   background-color: #CAD8E6;
-  height: 100vh;
+  height: 100%;
+  background-size: cover;
 }
 </style>

@@ -13,7 +13,7 @@
             cols="12"
             sm="12"
             md="10">
-            <v-card class="elevation-10 mx-5"  color="white">
+            <v-card class="elevation-10"  color="white">
                  <v-card-text>
                 <v-form>
                      <v-row>
@@ -48,17 +48,51 @@
                      <v-row>
                         <v-col
                         cols="12"
-                         sm="6"
-                            md="6">
+                         sm="12"
+                            md="12">
                              <v-text-field type="text" v-model="description" solo label="Description"></v-text-field>
                         </v-col>
-                          <v-col
+                     </v-row>
+                     <!-- another row -->
+                     <p>Kindly pick from the list below</p>
+                     <v-radio-group v-model="column" row>
+                          <v-radio label="Serial Number" value="radio-1"></v-radio>
+                          <v-radio label="Quantity" value="radio-2"></v-radio>
+                        </v-radio-group>
+                          <!-- design -->
+                      <v-row>
+                        <v-col
+                        cols="12"
+                         sm="6"
+                            md="4">
+                    <v-text-field type="text" v-model="serial" solo label="'e.g 1223ww,12342ca,'">
+                  </v-text-field>
+                        </v-col>
+                    <v-col
+                        cols="12"
+                         sm="6"
+                            md="2">
+                    <v-btn color="#1976D2" class="white--text" large @click="add()">
+                          <v-icon left>mdi-plus</v-icon>
+                          Add
+                        </v-btn>
+                    </v-col>
+                    <v-col
                         cols="12"
                          sm="6"
                             md="6">
-                  <v-text-field v-model="quantity" type="number" solo label="Quantity"></v-text-field>  
-                          </v-col>
-                     </v-row>
+                    <v-text-field type="number" v-model="quantity" solo label="Quantity"></v-text-field>
+                        </v-col>
+                          </v-row>
+                      <!-- where to display the serial number -->
+                      <v-row>
+                        <v-col
+                        cols="12"
+                         sm="6"
+                            md="6">
+                <v-textarea v-model="list" readonly solo auto-grow="true" label="List of serial numbers added"></v-textarea>
+                        </v-col>
+                      </v-row>
                      <!-- third row -->
                        <v-row>
                         <v-col
@@ -147,12 +181,20 @@ export default {
              quantity: '',
              brought: '',
              comment: '',
-             received: ''
+             received: '',
+             column: 'radio-2',
+             serial: [],
+             list: []
          }
      },
      methods:{
         select(){
            console.log(this.type)
+        },
+        add(){
+          console.log(this.serial)
+          this.list.push(this.serial)
+          console.log(this.list)
         },
         Create(){
            console.log(this.name)

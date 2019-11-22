@@ -12,7 +12,7 @@ if (token) {
   Vue.prototype.$http.defaults.headers.common['Authorization'] = token
 }
 
-Axios.defaults.baseURL = "http://192.168.1.114:3000"
+Axios.defaults.baseURL = "http://192.168.1.107:3000"
 
 Vue.config.productionTip = false
 

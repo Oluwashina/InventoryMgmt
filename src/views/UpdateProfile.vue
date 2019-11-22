@@ -102,15 +102,23 @@
                         cols="12"
                          sm="12"
                             md="6">
-
+                            <!-- <label class="black--text" style="font-size: 15px;">Upload Profile Picture</label>
+                            <input type="file"  accept="image/*" ref="file" @change="onFileChange()"> -->
+                             <v-file-input
+                                label="Upload Picture"
+                                accept="image/*"
+                                ref="file"
+                                filled
+                                prepend-icon="mdi-camera"
+                                @change="onFileChange($event)"></v-file-input>
                         </v-col>
                     </v-row>
                 </v-form>
                 </v-card-text>
                     <div class="text-center mt-n8">
-                        <v-btn color="#1976D2" class="white--text ma-2 mb-12" v-on:click="update()">Update Profile
+                        <v-btn small color="#1976D2" class="white--text ma-2 mb-12" v-on:click="update()">Update Profile
                         </v-btn>
-                        <v-btn color="#1976D2" class="white--text ma-2 mb-12" router-link to="/resetpassword">Change Password
+                        <v-btn small color="#1976D2" class="white--text ma-2 mb-12" router-link to="/resetpassword">Change Password
                         </v-btn>
                     </div>
             </v-card>
@@ -135,23 +143,31 @@ export default {
             username: this.$store.state.username[0].UserName,
             email: this.$store.state.username[0].Email,
             phonenumber: this.$store.state.username[0].PhoneNumber,
-            snackbar: false
+            snackbar: false,
+            file: "",
         }
     },
     methods:{
+        onFileChange(e){
+        //  console.log(e)
+         this.file = e;
+         console.log(this.file)
+        },
         update(){
         this.$store.dispatch("Update", {
-           "staff_id": this.$store.state.logindata.Staff_Id,
-           "username": this.$store.state.username[0].UserName,
-           "firstname": this.firstname,
-           "lastname": this.lastname,
-           "email": this.email,
-           "phonenumber": this.phonenumber,
-           "roles": this.$store.state.logindata.roleId
+           staffId: this.$store.state.logindata.Staff_Id,
+           userName: this.$store.state.username[0].UserName,
+           firstName: this.firstname,
+           lastName: this.lastname,
+           email: this.email,
+           phoneNumber: this.phonenumber,
+           image: this.file,
+           roles: this.$store.state.logindata.roleId
        })
         .then((success)=>{
          console.log(success);
          this.snackbar = true
+         this.$router.push('/users')
        })
        .catch((error)=>{
          console.log(error);

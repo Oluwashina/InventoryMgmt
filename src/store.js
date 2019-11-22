@@ -15,12 +15,22 @@ export default new Vuex.Store({
     inactive: [],
     count: '',
     assets: [],
+    bell: [],
+    bellcountuser: [],
     viewassets: [],
+    assetsassigned: [],
+    viewrequest: [],
     assigned: [],
     countasset: '',
+    countrequest: [],
+    totalrequest: [],
+    countassigned: [],
     category: [],
     select: [],
-    messages: 5
+    selectedUser: '',
+    messages: 3,
+    notifications: [],
+    usernotifications: []
   },
   getters:{
     loggedIn(state){
@@ -33,6 +43,12 @@ export default new Vuex.Store({
     },
     LoginDetails(state, data){
       state.logindata = data
+    },
+    bellcount(state, data){
+      state.bell = data.count
+    },
+    bellcountuser(state, data){
+      state.bellcountuser = data.count
     },
     Users(state, data){
       state.users = data.data
@@ -70,11 +86,26 @@ export default new Vuex.Store({
     viewassets(state, data){
       state.viewassets = data.lot
     },
+    assetsassigned(state, data){
+      state.assetsassigned = data.lot
+    },
+    viewrequest(state, data){
+      state.viewrequest = data.requests
+    },
     assigned(state, data){
-      state.assigned = data.item
+      state.assigned = data
     },
     countasset(state, data){
       state.countasset = data.data
+    },
+    countrequest(state, data){
+      state.countrequest = data.data
+    },
+    totalrequest(state,data){
+      state.totalrequest = data.data
+    },
+    countassigned(state, data){
+      state.countassigned = data.data
     },
     category(state, data){
       state.category = data.categories
@@ -82,6 +113,15 @@ export default new Vuex.Store({
     selected(state, payload){
       state.select = payload
     },
+    selectedUser(state, payload){
+      state.selectedUser = payload
+    },
+    notification(state, data){
+      state.notifications = data.notifications
+    },
+    usernotifications(state, data){
+      state.usernotifications = data.notifications
+    }
   },
   actions: {
     Login: ({commit}, payload) => {
@@ -255,6 +295,34 @@ export default new Vuex.Store({
         });
       })
     },
+    BellCount: ({commit})=>{
+      return new Promise((resolve, reject)=>{
+        axios.get("/notification/count?to=storeKeeper&is_Read=0")
+        .then(({status, data})=>{
+          if(status === 200){
+            resolve(data);
+            commit('bellcount', data);
+          }
+        })
+        .catch((error)=>{
+          reject(error);
+        });
+      })
+    },
+    BellCountUser: ({commit},payload)=>{
+      return new Promise((resolve, reject)=>{
+        axios.get("/notification/count?to="+payload)
+        .then(({status, data})=>{
+          if(status === 200){
+            resolve(data);
+            commit('bellcountuser', data);
+          }
+        })
+        .catch((error)=>{
+          reject(error);
+        });
+      })
+    },
     CountUsers:({commit})=>{
       return new Promise((resolve, reject)=>{
         axios.get("/count/Users")
@@ -297,16 +365,30 @@ export default new Vuex.Store({
       })
     },
     Update:({commit}, payload)=>{
+      console.log(payload.image)
+      var bodyFormData = new FormData();
+      bodyFormData.set('staff_id', payload.staffId);
+      bodyFormData.set('username', payload.userName);
+      bodyFormData.set('firstname', payload.firstName);
+      bodyFormData.set('lastname', payload.lastName);
+      bodyFormData.set('email',  payload.email);
+      bodyFormData.set('phonenumber', payload.phoneNumber);
+      bodyFormData.append('Image', payload.image);
+      bodyFormData.set('roles', JSON.stringify(payload.roles));
+      alert(JSON.stringify(payload.roles));
       return new Promise((resolve, reject)=>{
-        axios.put("/Users", payload)
-        .then(({status, data})=>{
-          if(status === 200){
-            resolve(data);
-          }
-        })
-        .catch((error)=>{
-          reject(error);
-        });
+        axios({
+          method: 'post',
+          url: '/Users',
+          data: bodyFormData,
+          config: { }
+              })
+          .then((data) => {
+            resolve(data)
+              })
+              .catch((error)=>{
+                reject(error)
+              });
       })
     },
     CreateAsset: ({commit}, payload)=>{
@@ -350,6 +432,20 @@ export default new Vuex.Store({
         });
       })
     },
+    ViewAssetsAssignedById: ({commit},id)=>{
+      return new Promise((resolve, reject)=>{
+        axios.get("/Assets/"+id+"?is_Assigned=1")
+        .then(({status, data})=>{
+          if(status === 200){
+            resolve(data);
+            commit('assetsassigned', data)
+          }
+        })
+        .catch((error)=>{
+          reject(error);
+        });
+      })
+    },
     AssignedAssets:({commit},payload)=>{
       return new Promise((resolve, reject)=>{
         axios.get("/Staff/Asset/"+payload)
@@ -361,7 +457,18 @@ export default new Vuex.Store({
         })
         .catch((error)=>{
           reject(error);
-        });
+        })
+      })
+    },
+    AssignAsset: ({commit},payload)=>{
+      return new Promise((resolve, reject)=>{
+        axios.post("/Assign",payload)
+        .then(({status, data})=>{
+            resolve(data);
+        })
+        .catch((error)=>{
+          reject(error);
+        })
       })
     },
     countAssets: ({commit})=>{
@@ -371,6 +478,48 @@ export default new Vuex.Store({
           if(status === 200){
             resolve(data)
             commit('countasset', data)
+          }
+        })
+        .catch((error)=>{
+          reject(error)
+        });
+      })
+    },
+    countAssigned: ({commit})=>{
+      return new Promise((resolve, reject)=>{
+        axios.get("/assignedAssetCount")
+        .then(({status, data})=>{
+          if(status === 200){
+            resolve(data)
+            commit('countassigned', data)
+          }
+        })
+        .catch((error)=>{
+          reject(error)
+        });
+      })
+    },
+    countRequest: ({commit},payload)=>{
+      return new Promise((resolve, reject)=>{
+        axios.get("/request/staff/"+payload)
+        .then(({status, data})=>{
+          if(status === 200){
+            resolve(data)
+            commit('countrequest', data)
+          }
+        })
+        .catch((error)=>{
+          reject(error)
+        });
+      })
+    },
+    TotalRequestCount: ({commit})=>{
+      return new Promise((resolve, reject)=>{
+        axios.get("/requestCount")
+        .then(({status, data})=>{
+          if(status === 200){
+            resolve(data)
+            commit('totalrequest', data)
           }
         })
         .catch((error)=>{
@@ -395,6 +544,9 @@ export default new Vuex.Store({
     selected: ({commit}, payload)=>{
       commit('selected',payload)
     },
+    selectedUser: ({commit}, payload)=>{
+        commit('selectedUser', payload)
+    },
     MakeRequest: ({commit},payload)=>{
       return new Promise((resolve, reject)=>{
         axios.post("/request",payload)
@@ -407,6 +559,61 @@ export default new Vuex.Store({
           reject(error);
         })
       });
+    },
+    Notifications: ({commit})=>{
+      return new Promise((resolve,reject)=>{
+        axios.get("/notification/?to=storeKeeper")
+        .then(({status, data})=>{
+          if(status === 200){
+            resolve(data)
+            commit("notification", data)
+          }
+        })
+        .catch((error)=>{
+          reject(error)
+        })
+      });
+    },
+    UserNotifications: ({commit}, payload)=>{
+      return new Promise((resolve,reject)=>{
+        axios.get("/notification/?to="+payload)
+        .then(({status, data})=>{
+          if(status === 200){
+            resolve(data)
+            commit("usernotifications", data)
+          }
+        })
+        .catch((error)=>{
+          reject(error)
+        })
+      });
+    },
+    ViewRequest: ({commit},payload)=>{
+      return new Promise((resolve, reject)=>{
+        axios.get("/request/"+payload)
+        .then(({status, data})=>{
+          if(status === 200){
+            resolve(data)
+            commit('viewrequest', data)
+          }
+        })
+        .catch((error)=>{
+          reject(error)
+        })
+      })
+    },
+    UpdateAssetStatus: ({commit}, payload)=>{
+      return new Promise((resolve, reject)=>{
+        axios.put("/Asset/status",payload)
+        .then(({status, data})=>{
+          if(status === 200){
+            resolve(data)
+          }
+        })
+        .catch((error)=>{
+          reject(error)
+        })
+      })
     }
   }
 })

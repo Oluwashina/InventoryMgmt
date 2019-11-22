@@ -8,7 +8,7 @@
             cols="12"
             sm="12"
             md="10">
-            <v-card class="elevation-10 mx-5" color="white">
+            <v-card class="elevation-10" color="white">
               <v-snackbar v-model="snackbar" :timeout="4000" top color="success">
                   <span>User successfully created...</span>
                      <v-btn text color="white" @click="snackbar = false">Close</v-btn>

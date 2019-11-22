@@ -24,7 +24,12 @@ import SelectedAsset from './views/SelectedAsset.vue'
 import AssignedAsset from './views/AssignedAsset.vue'
 import AssignAsset from './views/AssignAsset.vue'
 import ConfirmAssign from './views/ConfirmAssign.vue'
+import ConfirmAssignById from './views/ConfirmAssignById.vue'
 import Transit from './views/Transit.vue'
+import Notifications from './views/Notifications.vue'
+import NotificationsById from './views/NotificationsById.vue'
+import UserNotifications from './views/UserNotifications.vue'
+import Report from './views/Report.vue'
 
 Vue.use(Router)
 
@@ -154,9 +159,34 @@ export default new Router({
       component: ConfirmAssign
     },
     {
+      path: '/confirmassign/:id',
+      name: 'ConfirmAssignById',
+      component: ConfirmAssignById
+    },
+    {
       path: '/transit',
       name: 'Transit',
-      component:  Transit
+      component: Transit
+    },
+    {
+      path: '/notifications',
+      name: 'Notifications',
+      component: Notifications
+    },
+    {
+      path: '/notifications/:id',
+      name: 'NotificationsById',
+      component: NotificationsById
+    },
+    {
+      path: '/viewnotifications',
+      name: 'UserNotifications',
+      component: UserNotifications
+    },
+    {
+      path: '/report',
+      name: 'Report',
+      component: Report
     }
   ]
 })

@@ -7,17 +7,17 @@
           <v-col
             cols="12"
             sm="12"
-            md="10">
+            md="12">
 
         <v-card class="elevation-10"  color="white">
-            <v-row>
+            <v-row class="mx-auto">
           <v-col
             cols="12"
             sm="12"
-            md="5">
+            md="4">
 
             <v-card
-             class="elevation-8 my-3 ml-7"
+             class="elevation-8 my-3"
     max-width="300">
     <v-list-item three-line class="card-color">
       <v-list-item-content>
@@ -37,10 +37,10 @@
             <v-col
             cols="12"
             sm="12"
-            md="5">
+            md="4">
 
              <v-card
-             class="elevation-8 my-5 ml-7"
+             class="elevation-8 my-3"
     max-width="300">
     <v-list-item three-line class="req-color">
       <v-list-item-content>
@@ -48,7 +48,7 @@
       </v-list-item-content>
 
       <v-list-item-content >
-        <h1 class="white--text">{{request}}</h1>
+        <h1 class="white--text" v-for="Request in RequestCount" :key="Request.id">{{Request.NumberOfRequest}}</h1>
         <p class="white--text">Total Request</p>
       </v-list-item-content>
 
@@ -56,9 +56,32 @@
     </v-list-item>
   </v-card>
             </v-col>
+
+             <v-col
+            cols="12"
+            sm="12"
+            md="4">
+
+             <v-card
+             class="elevation-8 my-3"
+    max-width="300">
+    <v-list-item three-line class="assign-color">
+      <v-list-item-content>
+        <v-icon large class="white--text">mdi-dresser</v-icon>
+      </v-list-item-content>
+
+      <v-list-item-content >
+        <h1 class="white--text">{{Assigned.NumberOfStaffAsset}}</h1>
+        <p class="white--text">Assigned Assets</p>
+      </v-list-item-content>
+
+      
+    </v-list-item>
+  </v-card>
+             </v-col>
             </v-row>
 
-            <v-row align="center" justify="center">
+            <v-row class="mx-auto">
                  <v-col
             cols="12"
             sm="12"
@@ -67,7 +90,7 @@
                  <v-data-table
                     v-model="selected"
                     :headers="headers"
-                    :items="Assigned"
+                    :items="Assigned.items"
                     :single-select="singleSelect"
                     item-key="name"
                     :items-per-page="3"
@@ -118,9 +141,9 @@ export default {
                     text: 'Name',
                     align: 'left',
                     sortable: false,
-                    value: 'name',
+                    value: 'Item_Name',
                   },
-                    { text: 'Description', value: 'asset' },
+                    { text: 'Description', value: 'Item_Desc' },
                     { text: 'Quantity', value: 'quantity' },
                 ],
                  desserts: [
@@ -157,6 +180,9 @@ export default {
       },
     Assigned(){
         return this.$store.state.assigned
+      },
+      RequestCount(){
+        return this.$store.state.countrequest
       }
     },
     created(){
@@ -174,6 +200,13 @@ export default {
       .catch((error)=>{
         console.log(error);
       });
+      this.$store.dispatch('countRequest',this.$store.state.username[0].UserName)
+      .then((success)=>{
+      console.log(success)
+    })
+    .catch((error)=>{
+      console.log(error);
+    })
     }
 }
 </script>
@@ -188,7 +221,12 @@ export default {
 .req-color{
     background: #FFB44C;
 }
+.assign-color{
+  background: #1976D2;
+}
 .users{
   background-color: #CAD8E6;
+  height: 100%;
+  background-size: cover;
 }
 </style>

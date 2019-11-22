@@ -7,6 +7,14 @@
     <v-row>
           <v-col
             cols="12"
+            sm="12"
+            md="12">
+
+        <v-card class="elevation-10"  color="white">
+
+    <v-row class="mx-auto">
+          <v-col
+            cols="12"
             sm="4"
             md="4">
 
@@ -63,7 +71,7 @@
 
     </v-row>
 
-    <v-row>
+    <v-row class="mx-auto">
           <v-col
             cols="12"
             sm="12"
@@ -100,10 +108,11 @@
       Statistics
       </p>
     </v-card-text>
-   
-
   </v-card>
+          </v-col>
+    </v-row>
 
+        </v-card>
           </v-col>
     </v-row>
 
