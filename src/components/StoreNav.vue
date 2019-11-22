@@ -65,7 +65,7 @@
               </v-list-item-content>
           </v-list-item>
           <v-list-item>
-            <v-btn color="#1976D2" class="white--text ml-6 mt-4" router-link to="/newasset">Add New Asset
+            <v-btn color="#1976D2" class="white--text ml-6 mt-4" router-link to="/assets">Add New Asset
               <v-icon right>mdi-plus</v-icon>
             </v-btn>
           </v-list-item>
@@ -115,6 +115,11 @@ export default {
                 title: 'ASSIGN ASSET',
                 icon: 'mdi-account-check',
                 route: '/assignasset'
+              },
+              {
+                title: 'ASSIGNED ASSET',
+                icon: 'mdi-dresser',
+                route: '/viewassigned'
               },
               {
                 title: 'GENERATE REPORT',

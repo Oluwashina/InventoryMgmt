@@ -21,6 +21,7 @@ export default new Vuex.Store({
     assetsassigned: [],
     viewrequest: [],
     assigned: [],
+    viewassignedassets: [],
     countasset: '',
     countrequest: [],
     totalrequest: [],
@@ -94,6 +95,9 @@ export default new Vuex.Store({
     },
     assigned(state, data){
       state.assigned = data
+    },
+    viewassignedassets(state, data){
+      state.viewassignedassets = data.data
     },
     countasset(state, data){
       state.countasset = data.data
@@ -425,6 +429,20 @@ export default new Vuex.Store({
           if(status === 200){
             resolve(data);
             commit('viewassets', data)
+          }
+        })
+        .catch((error)=>{
+          reject(error);
+        });
+      })
+    },
+    ViewAssignedAssets: ({commit})=>{
+      return new Promise((resolve, reject)=>{
+        axios.get("/lot/?is_Assigned=1")
+        .then(({status, data})=>{
+          if(status === 200){
+            resolve(data);
+            commit('viewassignedassets', data)
           }
         })
         .catch((error)=>{

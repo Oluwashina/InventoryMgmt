@@ -10,6 +10,14 @@
             sm="12"
             md="12">
               <v-card class="elevation-10"  color="white">
+                   <v-row>
+                  <v-col
+                    cols="12"
+                    sm="6"
+                    md="6">
+                    <h3 class="mx-5">All Assets</h3>
+                  </v-col>
+                   </v-row>
                  <v-data-table
                     v-model="selected"
                     :headers="headers"
@@ -30,15 +38,6 @@
                             <v-spacer></v-spacer>
                         </v-toolbar>
                     </template>
-                    <template v-slot:body.append>
-                            <tr>
-                            <td></td>
-                            <td>
-                        <h3 class="user-color">Total: </h3>
-                            </td>
-                            <td colspan="4"></td>
-                            </tr>
-                        </template>
                  </v-data-table>
               </v-card>
           </v-col>

@@ -12,7 +12,7 @@
           <v-col
             cols="12"
             sm="12"
-            md="10">
+            md="12">
             <v-card class="elevation-10"  color="white">
                  <v-card-text>
                 <v-form>
@@ -104,7 +104,7 @@
                         :items="Status"
                         label="Status"
                         solo
-                        placeholder="Select..."
+                        placeholder="Select Condition"
                          ></v-autocomplete>
                         </v-col>
                           <v-col
@@ -129,7 +129,7 @@
                         solo chips clearable
                         :return-object ="false"
                         label="Category"
-                        placeholder="Select..."
+                        placeholder="Select Category"
                          @change="select()"
                          >
                          </v-combobox>

@@ -8,6 +8,7 @@ import ViewUsersById from './views/ViewUsersById.vue'
 import ViewAssets from './views/ViewAssets.vue'
 import ViewAssetsById from './views/ViewAssetsById.vue'
 import Assets from './views/Assets.vue'
+import BatchAsset from './views/BatchAsset.vue'
 import NewAsset from './views/NewAsset.vue'
 import AssetsById from './views/AssetsById.vue'
 import ForgotPassword from './views/ForgotPassword.vue'
@@ -23,6 +24,7 @@ import MakeRequest from './views/MakeRequest.vue'
 import SelectedAsset from './views/SelectedAsset.vue'
 import AssignedAsset from './views/AssignedAsset.vue'
 import AssignAsset from './views/AssignAsset.vue'
+import ViewAssignedAssets from './views/ViewAssignedAssets.vue'
 import ConfirmAssign from './views/ConfirmAssign.vue'
 import ConfirmAssignById from './views/ConfirmAssignById.vue'
 import Transit from './views/Transit.vue'
@@ -82,6 +84,11 @@ export default new Router({
       path: '/assets',
       name: 'Assets',
       component: Assets
+    },
+    {
+      path: '/batch',
+      name: 'Batch Assets',
+      component:  BatchAsset
     },
     {
       path: '/assets/:id',
@@ -147,6 +154,11 @@ export default new Router({
       path: '/assignedasset',
       name: 'AssignedAsset',
       component:  AssignedAsset
+    },
+    {
+      path: '/viewassigned',
+      name: 'ViewAssignedAsset',
+      component: ViewAssignedAssets
     },
     {
       path: '/assignasset',

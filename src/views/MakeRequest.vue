@@ -98,8 +98,8 @@
               >
         <v-icon color="#5F5D5D">{{icon}}</v-icon>
         </v-btn> -->
-        <v-checkbox multiple
-      v-model="checkbox" @change="check($event)" :value="assets.item_id"
+        <v-checkbox
+      v-model="checkbox" @change="check()"
     ></v-checkbox>
       </v-list-item-content>
     </v-list-item>
@@ -135,7 +135,8 @@ export default {
         return{
             icon: 'mdi-plus',
             request: [],
-            checkbox: false
+            checkbox: false,
+            select: []
         }
     },
     methods:{
@@ -152,8 +153,14 @@ export default {
           }    
         },
         check(id){
-          console.log(id)
+          alert(id);
           this.checkbox = false
+
+          // console.log(id)
+          // alert(id)
+          // this.checkbox = false
+          // this.select.push(id);
+          // console.log(this.select)
         },
         selectedcount(){
           console.log(this.request)

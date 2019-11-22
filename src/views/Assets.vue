@@ -48,9 +48,9 @@
   <!-- dialog -->
   <template v-slot:top>
       <v-toolbar flat color="white">
-        <v-toolbar-title>Kayar</v-toolbar-title>
+        <v-toolbar-title class="hidden-sm-and-down">Kayar</v-toolbar-title>
         <v-divider
-          class="mx-4"
+          class="mx-4 hidden-sm-and-down"
           inset
           vertical
         ></v-divider>
@@ -60,6 +60,10 @@
             <v-btn color="#1976D2" class="white--text new-asset mb-2" router-link to="/newasset">
                 <v-icon left>mdi-plus</v-icon>
                 New Asset
+                </v-btn>
+                 <v-btn color="#1976D2" class="white--text new-asset mb-2 mr-4 " router-link to="/batch">
+                <v-icon left>mdi-plus</v-icon>
+                Batch Asset
                 </v-btn>
           </template>
         </v-dialog>

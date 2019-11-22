@@ -63,7 +63,7 @@
               </v-list-item>
               <v-divider></v-divider>
               <v-card-actions>
-                <v-btn text color="#1976D2">View Assigned assets
+                <v-btn text color="#1976D2" router-link to="/viewassigned">View Assigned assets
                   <v-icon right>mdi-chevron-right</v-icon>
                 </v-btn>
               </v-card-actions>
