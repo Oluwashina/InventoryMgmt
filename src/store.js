@@ -11,6 +11,7 @@ export default new Vuex.Store({
     allusers: [],
     username: [],
     usersbyid: [],
+    userdetails: [],
     logindata: [],
     inactive: [],
     count: '',
@@ -27,6 +28,7 @@ export default new Vuex.Store({
     totalrequest: [],
     countassigned: [],
     category: [],
+    categorybyid: [],
     select: [],
     selectedUser: '',
     messages: 3,
@@ -59,6 +61,9 @@ export default new Vuex.Store({
     },
     usersbyid(state, data){
       state.usersbyid = data.data
+    },
+    userdetails(state, data){
+      state.userdetails = data.data
     },
     inactive(state, data){
       state.allusers = data.data
@@ -114,6 +119,9 @@ export default new Vuex.Store({
     category(state, data){
       state.category = data.categories
     },
+    categorybyid(state, data){
+      state.categorybyid = data.categories
+    },
     selected(state, payload){
       state.select = payload
     },
@@ -167,6 +175,20 @@ export default new Vuex.Store({
           if(status === 200){
             resolve(data);
             commit("usersbyid",data)
+          }
+        })
+        .catch((error)=>{
+          reject(error)
+        })
+      })
+    },
+    UserDetails: ({commit}, id)=>{
+      return new Promise((resolve,reject)=>{
+        axios.get("/Users/"+id)
+        .then(({data, status})=>{
+          if(status === 200){
+            resolve(data);
+            commit("userdetails", data)
           }
         })
         .catch((error)=>{
@@ -369,7 +391,6 @@ export default new Vuex.Store({
       })
     },
     Update:({commit}, payload)=>{
-      console.log(payload.image)
       var bodyFormData = new FormData();
       bodyFormData.set('staff_id', payload.staffId);
       bodyFormData.set('username', payload.userName);
@@ -379,7 +400,6 @@ export default new Vuex.Store({
       bodyFormData.set('phonenumber', payload.phoneNumber);
       bodyFormData.append('Image', payload.image);
       bodyFormData.set('roles', JSON.stringify(payload.roles));
-      alert(JSON.stringify(payload.roles));
       return new Promise((resolve, reject)=>{
         axios({
           method: 'post',
@@ -395,6 +415,25 @@ export default new Vuex.Store({
               });
       })
     },
+    UpdateImage: ({commit},payload)=>{
+      var bodyFormData = new FormData();
+      bodyFormData.set('staffId', payload.staffId);
+      bodyFormData.append('Image', payload.image);
+      return new Promise((resolve, reject)=>{
+        axios({
+          method: 'put',
+          url: '/Users/Image',
+          data: bodyFormData,
+          config: { }
+              })
+          .then((data) => {
+            resolve(data)
+              })
+         .catch((error)=>{
+                reject(error)
+            });
+      })
+    },
     CreateAsset: ({commit}, payload)=>{
      return new Promise((resolve, reject)=>{
        axios.post("/Assets", payload)
@@ -408,6 +447,32 @@ export default new Vuex.Store({
        });
      })
     },
+    EditAsset: ({commit},payload)=>{
+      return new Promise((resolve, reject)=>{
+        axios.put("/Assets", payload)
+        .then(({status, data})=>{
+          if(status === 200){
+            resolve(data);
+          }
+        })
+        .catch((error)=>{
+          reject(error);
+        });
+      })
+    },
+    EditCategory: ({commit},payload)=>{
+      return new Promise((resolve, reject)=>{
+        axios.put("/category", payload)
+        .then(({status, data})=>{
+          if(status === 200){
+            resolve(data);
+          }
+        })
+        .catch((error)=>{
+          reject(error);
+        });
+      })
+    },
     ViewAssets: ({commit})=>{
       return new Promise((resolve, reject)=>{
         axios.get("/Assets")
@@ -420,6 +485,24 @@ export default new Vuex.Store({
         .catch((error)=>{
           reject(error);
         });
+      })
+    },
+    BatchAsset: ({commit},payload)=>{
+      var bodyFormData = new FormData();
+      bodyFormData.append('csvDoc', payload.csvDoc);
+      return new Promise((resolve, reject)=>{
+        axios({
+          method: 'post',
+          url: '/Assets',
+          data: bodyFormData,
+          config: { }
+              })
+          .then((data) => {
+            resolve(data)
+              })
+              .catch((error)=>{
+                reject(error)
+              });
       })
     },
     ViewAssetsById: ({commit}, id)=>{
@@ -559,6 +642,20 @@ export default new Vuex.Store({
         })
       });
     },
+    CategoryById: ({commit},payload)=>{
+      return new Promise((resolve, reject)=>{
+        axios.get("/category/"+payload)
+        .then(({status, data})=>{
+          if(status === 200){
+            resolve(data)
+            commit('categorybyid', data)
+          }
+        })
+        .catch((error)=>{
+          reject(error);
+        })
+      });
+    },
     selected: ({commit}, payload)=>{
       commit('selected',payload)
     },
@@ -627,6 +724,41 @@ export default new Vuex.Store({
           if(status === 200){
             resolve(data)
           }
+        })
+        .catch((error)=>{
+          reject(error)
+        })
+      })
+    },
+    Deassign: ({commit},payload)=>{
+      return new Promise((resolve, reject)=>{
+        axios.post("unAssign",payload)
+        .then(({status, data})=>{
+          if(status === 200){
+            resolve(data)
+          }
+        })
+        .catch((error)=>{
+          reject(error)
+        })
+      })
+    },
+    DownloadAssets: ({commit})=>{
+      return new Promise((resolve, reject)=>{
+        axios.get('Assets?typeMedia=CSV')
+        .then(({status, data})=>{
+            resolve(data)
+        })
+        .catch((error)=>{
+          reject(error)
+        })
+      })
+    },
+    MarkAsRead: ({commit},payload)=>{
+      return new Promise((resolve, reject)=>{
+        axios.put('/notification',payload)
+        .then(({status, data})=>{
+            resolve(data)
         })
         .catch((error)=>{
           reject(error)

@@ -7,6 +7,10 @@
                   <span>You've successfully assigned the asset to {{Username}}</span>
                      <v-btn text color="white" @click="snackbar = false">Close</v-btn>
         </v-snackbar>
+        <v-snackbar v-model="snackbar1" :timeout="4000" top color="success">
+                  <span>Lot has been selected, you can now assign</span>
+                     <v-btn text color="white" @click="snackbar1 = false">Close</v-btn>
+        </v-snackbar>
           <v-row>
           <v-col
             cols="12"
@@ -73,7 +77,7 @@
                                     color="#5F5D5D" 
                             ></v-text-field>
                             <div class="text-right">
-                            <v-btn small  @click="select(view.id, view.quantity, view.item_id)">Select</v-btn>
+                            <v-btn text small v-bind:class="{ 'active': current === view.id }" @click="select(view.id, view.quantity, view.item_id)">Select</v-btn>
                             </div>
                             </v-card-text>
                           </v-card>
@@ -82,7 +86,7 @@
                </v-row>
                       <!-- fifth row -->
                     <div class="text-center">
-                        <v-btn color="#1976D2" class="white--text ma-2 mt-6 mb-6" v-on:click="Assign()">
+                        <v-btn color="#1976D2" :loading="loading" class="white--text ma-2 mt-6 mb-6" v-on:click="Assign()">
                              <v-icon small left>mdi-check</v-icon>
                              Assign
                         </v-btn>
@@ -104,12 +108,14 @@ export default {
     data(){
         return{
           assets: [],
-          snackbar: false
+          snackbar: false,
+          loading: false,
+          current: null,
+          snackbar1: false
         }
     },
     methods:{
         view(id){
-            alert(id);
             this.$store.dispatch("ViewAssetsAssignedById", id)
             .then((success)=>{
                 console.log(success);
@@ -119,16 +125,13 @@ export default {
          })
         },
         select(event_id,assign_quantity,itemId){
-            alert(event_id)
-            alert(assign_quantity)
-            alert(itemId)
             this.assets.push({event_id,assign_quantity,itemId})
             console.log(this.assets)
+            this.current = event_id
+            this.snackbar1 = true
         },
         Assign(){
-            alert(this.$store.state.selectedUser)
-            alert(this.$store.state.username[0].UserName)
-            alert(this.$store.state.assetsassigned[0].location)
+            this.loading = true
              this.$store.dispatch("AssignAsset",{
                 "requestStatus": "Nill Request",
                 "location": this.$store.state.assetsassigned[0].location,
@@ -138,6 +141,7 @@ export default {
         })
         .then((success)=>{
           console.log(success);
+          this.loading = false
           this.snackbar = true
         })
         .catch((error)=>{
@@ -168,5 +172,9 @@ export default {
 }
 .header-color{
      color: #5F5D5D;
+}
+.active{
+  color: white;
+  background: #1976D2;
 }
 </style>

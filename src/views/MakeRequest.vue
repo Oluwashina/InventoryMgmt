@@ -22,8 +22,8 @@
     <v-tabs>
         <v-tab><v-icon>search</v-icon>
         </v-tab>
-         <v-tab><v-icon>mdi-format-list-bulleted
-        </v-icon></v-tab>
+         <!-- <v-tab><v-icon>mdi-format-list-bulleted
+        </v-icon></v-tab> -->
             <!-- first tab  -->
         <v-tab-item>
         <v-card color="white">
@@ -61,62 +61,6 @@
        
        <!-- second tab -->
        
-             <v-tab-item>
-        <v-card color="white">
-          <v-card-text>
-            <p class="asset-color my-3">
-            Select Asset to request
-            </p>
-          </v-card-text>
-
-          <v-row>
-          <v-col
-            cols="12"
-            sm="6"
-            md="6" v-for="assets in Assets" :key="assets.id">
-            
-   <v-card
-    class="elevation-3 mx-5"
-    color="#ffffff"
-    >
-    <v-list-item three-line >
-      <v-list-item-content>
-          <v-card-text>
-              <h3 class="request-color">{{assets.item_Name}}</h3>
-              <h4 class="request-color" style="margin-top:20px;">{{assets.item_Desc}}</h4>
-          </v-card-text>
-      </v-list-item-content>
-
-      <v-list-item-content >
-       <!-- <v-btn
-         small
-         absolute
-         fab
-         v-on="on"
-         class="btn-adjust"
-        v-on:click="select(assets.item_id, Assets)"
-              >
-        <v-icon color="#5F5D5D">{{icon}}</v-icon>
-        </v-btn> -->
-        <v-checkbox
-      v-model="checkbox" @change="check()"
-    ></v-checkbox>
-      </v-list-item-content>
-    </v-list-item>
-   </v-card>
-
-          </v-col>
-          
-          </v-row>
-          
-           <v-card-text class="text-right">
-                <v-btn color="#1976D2" class="white--text" router-link to="/selectedasset">Continue
-                    <v-icon right>mdi-chevron-right</v-icon>
-                </v-btn>
-              </v-card-text>
-
-        </v-card>
-        </v-tab-item>
     </v-tabs>
 
     </v-container>

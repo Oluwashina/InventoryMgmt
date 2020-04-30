@@ -6,15 +6,6 @@
         <span class="white--text">Kayar</span>
       </v-toolbar-title>
       <v-spacer></v-spacer>
-       <v-text-field
-        flat
-        solo-inverted
-        hide-details
-        label="Search"
-        append-icon="search"
-        color="#ffffff" 
-        class="hidden-sm-and-down">
-      </v-text-field>
       <v-btn icon class="white--text">
         <v-icon>mdi-apps</v-icon>
       </v-btn>
@@ -170,7 +161,7 @@ export default {
       }
     },
      getImgUrl(pic) {
-            let weblink = "http://192.168.1.107:3000/images/users/";
+            let weblink = "http://192.168.1.111:5000/images/users/";
             return weblink+pic;
     },
   },
@@ -182,7 +173,7 @@ export default {
     .catch((error)=>{
       console.log(error)
     })
-    this.$store.dispatch("UserById",this.$store.state.username[0].Staff_Id)
+    this.$store.dispatch("UserById",this.$store.state.logindata.Staff_Id)
     .then((success)=>{
       console.log(success)
     })

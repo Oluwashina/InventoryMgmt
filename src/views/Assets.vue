@@ -3,6 +3,10 @@
         <StoreNav/>
         <v-container>
         <h2 class="subheading mx-5 my-2 header-color">VIEW ASSETS</h2>
+        <v-snackbar v-model="snackbar" :timeout="4000" top color="success">
+                  <span>Assets successfully updated..</span>
+                     <v-btn text color="white" @click="snackbar = false">Close</v-btn>
+                </v-snackbar>
         <v-row>
           <v-col
             cols="12"
@@ -40,13 +44,13 @@
     v-model="selected"
     :headers="headers"
     :items="Assets"
-     :items-per-page="5"
+     :items-per-page="10"
     :single-select="singleSelect"
     :search="search"
     class="elevation-1"
   >
   <!-- dialog -->
-  <template v-slot:top>
+   <template v-slot:top>
       <v-toolbar flat color="white">
         <v-toolbar-title class="hidden-sm-and-down">Kayar</v-toolbar-title>
         <v-divider
@@ -54,8 +58,8 @@
           inset
           vertical
         ></v-divider>
-        <v-spacer></v-spacer>
-        <v-dialog v-model="dialog" max-width="500px">
+        <v-spacer></v-spacer>     
+    <v-dialog v-model="dialog" max-width="500px">
           <template v-slot:activator="{ on }">
             <v-btn color="#1976D2" class="white--text new-asset mb-2" router-link to="/newasset">
                 <v-icon left>mdi-plus</v-icon>
@@ -66,31 +70,74 @@
                 Batch Asset
                 </v-btn>
           </template>
-        </v-dialog>
+
+          <v-card>
+            <v-card-title>
+              <span class="headline">Edit Asset</span>
+            </v-card-title>
+
+            <v-card-text>
+              <v-container>
+                <v-row>
+                  <v-col cols="12" sm="12" md="12">
+                    <v-text-field v-model="name" @change="select(Assets)" solo label="Name"></v-text-field>
+                  </v-col>
+                </v-row>
+                 <v-row>
+                  <v-col cols="12" sm="12" md="12">
+                    <v-text-field v-model="description" solo label="Description"></v-text-field>
+                  </v-col>
+                </v-row>
+                 <v-row>
+                  <v-col cols="12" sm="12" md="12">
+                    <v-combobox 
+                        v-model="type"
+                        :items="categorybyid"
+                        item-text="Category_Name"
+                        item-value="Category_Name"
+                        multiple hide-selected
+                        solo chips clearable
+                        :return-object ="false"
+                        label="Category"
+                        placeholder="Select Category"
+                         @change="selecty()"
+                         >
+                         </v-combobox>
+                  </v-col>
+                </v-row>
+              </v-container>
+            </v-card-text>
+
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="blue darken-1" text @click="close">Cancel</v-btn>
+              <v-btn color="blue darken-1" :loading="loading" text @click="update()">Update</v-btn>
+            </v-card-actions>
+          </v-card>
+    </v-dialog>
       </v-toolbar>
-    </template>
+     </template>
   
-  <template v-slot:item.status="{ item }">
-      <v-chip :color="getColor(item.status)" dark>{{ item.status }}</v-chip>
-    </template>
-
      <template v-slot:item.action="{ item }">
-      <v-icon
-        small
-        class="mr-2"
-        @click="editItem(item)"
-      >
-        edit
+           <v-icon
+            small
+            class="mr-2" color="#1976D2"
+            @click="editItem(item.item_id, item.item_Name, Assets)"
+          >
+            edit
       </v-icon>
-    </template>
+        <v-btn small color="#1976D2" text class="" v-on:click="showAlert(item.item_id)">
+                  View Lots  
+          </v-btn>
+     </template>
 
-     <template v-slot:item="{item}">
+     <!-- <template v-slot:item="{item}">
           <tr @click="showAlert(item.item_id)">
           <td>{{ item.item_Name }}</td>
           <td>{{ item.item_Desc }}</td>
           <td>{{ item.Quantity }}</td>
            </tr>
-    </template>
+    </template> -->
 
   </v-data-table>
     
@@ -125,6 +172,7 @@ export default {
         countries: ["Good","Bad"],
         search: '',
         dialog: false,
+        loading: false,
         editedIndex: -1,
         headers: [
           {
@@ -135,7 +183,14 @@ export default {
           },
           { text: 'Description', value: 'item_Desc' },
           { text: 'Quantity', value: 'Quantity' },
+          { text: '', value: 'action', sortable: false }
         ],
+        itemID: '',
+        name: '',
+        description: '',
+        type: [],
+        Result: '',
+        itemName: ''
         }
      },
      computed: {
@@ -148,6 +203,9 @@ export default {
       category(){
         return this.$store.state.category
       },
+      categorybyid(){
+        return this.$store.state.categorybyid
+      }
     },
      watch: {
       dialog (val) {
@@ -160,13 +218,65 @@ export default {
         else if (status == 'Okay') return '#FFB44C'
         else return 'red'
       },
-      editItem(item) {
-        this.editedIndex = this.desserts.indexOf(item)
-        this.editedItem = Object.assign({}, item)
+      select(){
+       var result = Assets.filter( obj => obj.item_Name === this.name)[0];
+        console.log(result);
+        this.Result = result.item_id
+      this.$store.dispatch("CategoryById", this.Result)
+      .then((success)=>{
+        console.log(success)
+      })
+      .catch((error)=>{
+        console.log(error);
+      })
+      },
+      selecty(){
+        console.log(this.type)
+      },
+      editItem(item, name, Assets) {
         this.dialog = true
+        this.itemID = item
+        console.log(this.itemID)
+        this.name = name
+
+        var result = Assets.filter( obj => obj.item_Name === name)[0];
+        console.log(result);
+        this.Result = result.item_id
+      this.$store.dispatch("CategoryById", this.Result)
+      .then((success)=>{
+        console.log(success)
+      })
+      .catch((error)=>{
+        console.log(error);
+      })
+      },
+      update(){
+        this.loading = true
+        this.$store.dispatch("EditAsset",{
+          "itemDescription": this.description,
+          "itemName": this.name,
+          "itemId": this.itemID
+        })
+        .then((success)=>{
+          console.log(success);
+          this.loading = false,
+          this.snackbar = true
+        })
+        .catch((error)=>{
+          console.log(error);
+        })
+        this.$store.dispatch("EditCategory",{
+            "itemId" : this.itemID,
+            "category" : this.type
+        })
+        .then((success)=>{
+          console.log(success);
+        })
+        .catch((error)=>{
+          console.log(error);
+        })
       },
       showAlert(a){
-        alert(a);
         this.$store.dispatch("ViewAssetsById", a)
         .then((success)=>{
           console.log(success);

@@ -140,8 +140,7 @@ export default {
               })
           },
           viewMore(id){
-            alert(id);
-            this.$store.dispatch("UserById",id)
+            this.$store.dispatch("UserDetails",id)
             .then((success)=>{
               console.log(success)
                this.$router.push(`/viewusers/${id}`)

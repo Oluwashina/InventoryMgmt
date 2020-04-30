@@ -28,6 +28,7 @@
                         solo chips clearable
                         item-text="item_Name"
                         item-value="item_Name"
+                        @change="select(Assets)"
                         :return-object = "false"
                        
                             ></v-combobox>
@@ -49,23 +50,30 @@
                         <v-col
                         cols="12"
                          sm="12"
-                            md="12">
+                            md="6">
                              <v-text-field type="text" v-model="description" solo label="Description"></v-text-field>
+                        </v-col>
+                          <v-col
+                        cols="12"
+                         sm="6"
+                            md="6">
+                    <v-text-field type="number" v-model="quantity" solo label="Quantity"></v-text-field>
                         </v-col>
                      </v-row>
                      <!-- another row -->
-                     <p>Kindly pick from the list below</p>
-                     <v-radio-group v-model="column" row>
+                     <!-- <v-radio-group v-model="column" row>
                           <v-radio label="Serial Number" value="radio-1"></v-radio>
-                          <v-radio label="Quantity" value="radio-2"></v-radio>
-                        </v-radio-group>
+                        </v-radio-group> -->
                           <!-- design -->
+                          
+                         <p>Enter Serial Numbers(Optional)</p>
                       <v-row>
                         <v-col
                         cols="12"
                          sm="6"
-                            md="4">
-                    <v-text-field type="text" v-model="serial" solo label="'e.g 1223ww,12342ca,'">
+                            md="6">
+                           
+                    <v-text-field type="text" v-model="serial" solo label="'e.g 123-ww,1234-2ca,'">
                   </v-text-field>
                         </v-col>
                     <v-col
@@ -77,12 +85,6 @@
                           Add
                         </v-btn>
                     </v-col>
-                    <v-col
-                        cols="12"
-                         sm="6"
-                            md="6">
-                    <v-text-field type="number" v-model="quantity" solo label="Quantity"></v-text-field>
-                        </v-col>
                           </v-row>
                       <!-- where to display the serial number -->
                       <v-row>
@@ -122,7 +124,7 @@
                             md="6">
                             <v-combobox 
                         v-model="type"
-                        :items="category"
+                        :items="categorybyid"
                         item-text="Category_Name"
                         item-value="Category_Name"
                         multiple hide-selected
@@ -171,7 +173,7 @@ export default {
      },
      data(){
          return{
-             Status: ["Good","Bad"],
+             Status: ["Brand-New","Used","Rented"],
              snackbar: false,
              name: '',
              location: '',
@@ -183,13 +185,25 @@ export default {
              comment: '',
              received: '',
              column: 'radio-2',
-             serial: [],
-             list: []
+             serial: '',
+             list: [],
+             Result: ''
          }
      },
      methods:{
-        select(){
-           console.log(this.type)
+        select(Assets){
+           console.log(this.name)
+          //  console.log(this.type)
+          var result = Assets.filter( obj => obj.item_Name === this.name)[0];
+          console.log(result);
+        this.Result = result.item_id
+      this.$store.dispatch("CategoryById", this.Result)
+      .then((success)=>{
+        console.log(success)
+      })
+      .catch((error)=>{
+        console.log(error);
+      })
         },
         add(){
           console.log(this.serial)
@@ -199,6 +213,7 @@ export default {
         Create(){
            console.log(this.name)
            console.log(this.type)
+           console.log(this.list)
           this.$store.dispatch("CreateAsset",{
           "itemName": this.name,
           "itemDescription": this.description,
@@ -208,7 +223,7 @@ export default {
           "broughtBy": this.brought,
           "status": this.status,
           "category": this.type,
-          "serialNumber": [],
+          "serialNumber": this.list,
           "comment": this.comment
         })
         .then((success)=>{
@@ -223,12 +238,15 @@ export default {
          }
      },
      computed:{
-          Assets(){
+        Assets(){
         return this.$store.state.assets
       },
       category(){
         return this.$store.state.category
       },
+      categorybyid(){
+        return this.$store.state.categorybyid
+      }
      },
     created(){
       this.$store.dispatch("ViewAssets")

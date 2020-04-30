@@ -149,7 +149,7 @@ export default {
       }
     },
     getImgUrl(pic) {
-            let weblink = "http://192.168.1.107:3000/images/users/";
+            let weblink = "http://192.168.1.111:5000/images/users/";
             return weblink+pic;
     },
   },

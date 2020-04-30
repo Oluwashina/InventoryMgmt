@@ -3,6 +3,10 @@
         <StoreNav/>
         <v-container>
         <h2 class="subheading mx-5 my-2 header-color">BATCH ASSET</h2>
+        <v-snackbar v-model="snackbar" :timeout="4000" top color="success">
+                  <span>Assets successfully added..</span>
+                     <v-btn text color="white" @click="snackbar = false">Close</v-btn>
+                </v-snackbar>
          <v-row>
           <v-col
             cols="12"
@@ -41,7 +45,7 @@
                     </v-col>
                  </v-row>
                     <v-card-text>
-                    <v-btn color="#1976D2" class="white--text mb-8" v-on:click="Create()">Create Asset
+                    <v-btn color="#1976D2" class="white--text mb-8" :loading="loading" v-on:click="Create()">Create Asset
                     </v-btn>
               </v-card-text>
                  </v-container>
@@ -63,17 +67,35 @@ export default {
      },
      data(){
          return{
-             file: ''
+             file: '',
+             snackbar:  false,
+             loading: false
          }
      },
      methods:{
         loadTextFromFile(ev) {
         console.log(ev)
-       const reader = new FileReader();
-       reader.readAsText(ev);
-       console.log(reader);
-        }
+        this.file = ev;
+        console.log(this.file);
+    //    const reader = new FileReader();
+    //    reader.readAsText(ev);
+    //    console.log(reader);
+        },
+        Create(){
+         this.loading = true;
+         this.$store.dispatch("BatchAsset", {
+           csvDoc: this.file
+        })
+        .then((success)=>{
+           console.log(success);
+           this.loading = false
+           this.snackbar = true;
+        })
+        .catch((error)=>{
+           console.log(error);
+        });
      }
+    }
 }
 </script>
 

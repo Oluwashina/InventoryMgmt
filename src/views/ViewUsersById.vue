@@ -3,6 +3,10 @@
         <AdminNav/>
         <v-container>
         <h2 class="subheading mx-5 my-2 header-color" v-for="user in Users" :key="user.id">Staff ID: {{user.Staff_Id}}</h2>
+         <v-snackbar v-model="snackbar" :timeout="4000" top color="success">
+                  <span>Profile successfully updated...</span>
+                     <v-btn text color="white" @click="snackbar = false">Close</v-btn>
+                </v-snackbar>
           <v-row>
           <v-col
             cols="12"
@@ -137,7 +141,7 @@
                           md="4"
                         >
                      <v-card-text class="text-center">
-                     <v-btn color="#1976D2" class="white--text" v-on:click="update()">Update User
+                     <v-btn color="#1976D2" :loading="loading" class="white--text" v-on:click="update()">Update User
                       </v-btn>
                    </v-card-text>
                       </v-col>
@@ -162,28 +166,32 @@ export default {
      },
      data(){
          return{
-             firstname: this.$store.state.usersbyid[0].FirstName,
-             lastname: this.$store.state.usersbyid[0].LastName,
-             email: this.$store.state.usersbyid[0].Email,
-             phonenumber: this.$store.state.usersbyid[0].PhoneNumber,
-             username: this.$store.state.usersbyid[0].UserName,
-             checkedNames: this.$store.state.usersbyid[0].Roles
+             firstname: this.$store.state.userdetails[0].FirstName,
+             lastname: this.$store.state.userdetails[0].LastName,
+             email: this.$store.state.userdetails[0].Email,
+             phonenumber: this.$store.state.userdetails[0].PhoneNumber,
+             username: this.$store.state.userdetails[0].UserName,
+             checkedNames: this.$store.state.userdetails[0].Roles,
+             loading: false,
+             snackbar: false
          }
      },
      methods:{
          update(){
+             this.loading = true
         this.$store.dispatch("Update", {
-           "staff_id": this.$store.state.usersbyid[0].Staff_Id,
-           "username": this.$store.state.usersbyid[0].UserName,
-           "firstname": this.firstname,
-           "lastname": this.lastname,
-           "email": this.email,
-           "phonenumber": this.phonenumber,
-           "roles": this.checkedNames
+           staffId: this.$store.state.userdetails[0].Staff_Id,
+           userName: this.$store.state.userdetails[0].UserName,
+           firstName: this.firstname,
+           lastName: this.lastname,
+           email: this.email,
+           phoneNumber: this.phonenumber,
+           roles: this.checkedNames
        })
         .then((success)=>{
          console.log(success);
-         alert("Profile successfully updated");
+         this.loading= false
+         this.snackbar = true
        })
        .catch((error)=>{
          console.log(error);
@@ -192,7 +200,7 @@ export default {
      },
      computed:{
          Users(){
-             return this.$store.state.usersbyid
+             return this.$store.state.userdetails
          }
      }
 }

@@ -7,10 +7,10 @@
           <v-col
             cols="12"
             sm="12"
-            md="10">
+            md="12">
             <v-card class="elevation-10" color="white">
               <v-snackbar v-model="snackbar" :timeout="4000" top color="success">
-                  <span>User successfully created...</span>
+                  <span>User successfully created...Kindly check your email for the password</span>
                      <v-btn text color="white" @click="snackbar = false">Close</v-btn>
                 </v-snackbar>
 
@@ -78,7 +78,7 @@
                           md="4"
                         >
                      <v-card-text class="text-center">
-                     <v-btn color="#1976D2" class="white--text" v-on:click="create()">Create User
+                     <v-btn color="#1976D2" :loading="loading" class="white--text" v-on:click="create()">Create User
                       </v-btn>
                    </v-card-text>
                       </v-col>
@@ -104,6 +104,7 @@ export default {
   },
    data: () => ({
      snackbar: false,
+     loading: false,
      error: false,
      firstname: '',
      lastname: '',
@@ -126,6 +127,7 @@ export default {
    }),
    methods: {
      create(){
+       this.loading = true
       const randomstring = Math.random().toString(36).slice(-8);
        this.$store.dispatch("Register", {
          "username": this.username,
@@ -137,6 +139,7 @@ export default {
        })
        .then((success)=>{
          console.log(success);
+         this.loading = false
          this.username = '',
          this.firstname = '',
          this.lastname = '',

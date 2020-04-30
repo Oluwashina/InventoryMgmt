@@ -97,7 +97,7 @@
                     :items="Assets"
                     :single-select="singleSelect"
                     item-key="name"
-                    :items-per-page="5"
+                    :items-per-page="10"
                     :search="search"
                     class="elevation-1"
                 >
@@ -258,7 +258,6 @@ export default {
         // this.editedIndex = this.desserts.indexOf(item)
         // this.editedItem = Object.assign({}, item)
         this.dialog = true
-        alert(item.id)
         this.ideal = item.id
       },
        close() {
@@ -270,7 +269,6 @@ export default {
       },
 
       save(){
-        alert(this.ideal)
         console.log(this.editedItem.status)
         console.log(this.comment)
         this.$store.dispatch("UpdateAssetStatus",{

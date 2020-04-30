@@ -64,7 +64,7 @@
                 </v-form>
                 </v-card-text> 
               <v-card-text class="text-center">
-                <v-btn color="#1976D2" class="white--text" v-on:click="update()">Change Password
+                <v-btn color="#1976D2" :loading="loading" class="white--text" v-on:click="update()">Change Password
                 </v-btn>
               </v-card-text>
             </v-card>
@@ -88,12 +88,14 @@ export default {
             oldpassword: '',
             newpassword: '',
             show1: false,
-            show2: false
+            show2: false,
+            loading: false
         
         }
     },
     methods:{
         update(){
+          this.loading = true
         this.$store.dispatch("ChangePassword", {
          "username":  this.$store.state.username[0].UserName,
          "oldPassword": this.oldpassword,
@@ -101,6 +103,7 @@ export default {
         })
         .then((success)=>{
          console.log(success);
+         this.loading = false
          alert("Password successfully changed");
          this.$router.push('/')
        })

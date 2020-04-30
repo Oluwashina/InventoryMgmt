@@ -62,29 +62,12 @@
       </v-toolbar>
     </template>
   
-  <template v-slot:item.status="{ item }">
-      <v-chip :color="getColor(item.status)" dark>{{ item.status }}</v-chip>
-    </template>
 
      <template v-slot:item.action="{ item }">
-      <v-icon
-        small
-        class="mr-2"
-        @click="editItem(item)"
-      >
-        edit
-      </v-icon>
+      <v-btn small color="#1976D2" text class="" v-on:click="showAlert(item.item_id)">
+                  View Lots  
+          </v-btn>
     </template>
-
-    <template v-slot:item="{item}">
-          <tr @click="showAlert(item.item_id)">
-          <td>{{ item.item_Name }}</td>
-          <td>{{ item.item_Desc }}</td>
-          <td>{{ item.Quantity }}</td>
-           </tr>
-    </template>
-
-
 
   </v-data-table>
     
@@ -148,7 +131,8 @@ export default {
             value: 'item_Name',
           },
           { text: 'Description', value: 'item_Desc' },
-          { text: 'Quantity', value: 'Quantity' }
+          { text: 'Quantity', value: 'Quantity' },
+          { text: '', value: 'action' }
         ],
       }
      },
@@ -174,14 +158,7 @@ export default {
         else if (status == 'Okay') return '#FFB44C'
         else return 'red'
       },
-      editItem(item) {
-        // this.editedIndex = this.desserts.indexOf(item)
-        // this.editedItem = Object.assign({}, item)
-        // this.dialog = true
-        alert("you clicked", item)
-      },
       showAlert(a){
-        alert(a);
         this.$store.dispatch("ViewAssetsById", a)
         .then((success)=>{
           console.log(success);

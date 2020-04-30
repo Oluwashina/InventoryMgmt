@@ -79,7 +79,7 @@
                </v-row>
 
                <v-card-text class="text-center">
-                <v-btn color="#1976D2" class="white--text" v-on:click="Request(Selected)">Make Request
+                <v-btn color="#1976D2" :loading="loading" class="white--text" v-on:click="Request(Selected)">Make Request
                 </v-btn>
               </v-card-text>
          
@@ -105,12 +105,14 @@ export default {
              icon: 'mdi-check',
              comment: '',
              quantity: '',
-             snackbar: false
+             snackbar: false,
+             loading: false
 
         }
     },
     methods:{
       Request(qty){
+        this.loading = true
         console.log(qty)
         const items = []
         for(var j in qty){
@@ -128,6 +130,7 @@ export default {
         })
         .then((success)=>{
           console.log(success);
+          this.loading = false
           this.snackbar = true;
           this.$router.push('/users')
         })

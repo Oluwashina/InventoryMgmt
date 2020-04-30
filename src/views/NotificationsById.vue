@@ -9,8 +9,12 @@
                 </v-snackbar>
      <v-snackbar v-model="snackbar1" :timeout="4000" top color="success">
         <span>Request not granted...</span>
-            <v-btn text color="white" @click="snackbar = false">Close</v-btn>
+            <v-btn text color="white" @click="snackbar1 = false">Close</v-btn>
      </v-snackbar>
+     <v-snackbar v-model="snackbar2" :timeout="4000" top color="success">
+                  <span>Lot has been selected, you can now assign</span>
+                     <v-btn text color="white" @click="snackbar2 = false">Close</v-btn>
+        </v-snackbar>
 
      <v-row>
           <v-col
@@ -95,7 +99,7 @@
                                     color="#5F5D5D" 
                             ></v-text-field>
                             <div class="text-right">
-                            <v-btn small  @click="select(view.id, view.quantity, view.item_id)">Select</v-btn>
+                            <v-btn text small v-bind:class="{ 'active': current === view.id }"  @click="select(view.id, view.quantity, view.item_id)">Select</v-btn>
                             </div>
                             </v-card-text>
                           </v-card>
@@ -104,11 +108,11 @@
                </v-row>
                    <!-- fourth row -->
                     <div class="mx-5">
-                        <v-btn small color="#1976D2" class="white--text ma-2 mb-12" v-on:click="Assign()">
+                        <v-btn small :loading="loading" v-if="notify[0].status === 'Pending...'" color="#1976D2" class="white--text ma-2 mb-12" v-on:click="Assign()">
                              <v-icon small left>mdi-check</v-icon>
                              Assign
                         </v-btn>
-                        <v-btn small color="#1976D2" class="white--text ma-2 mb-12" v-on:click="NotGranted()">
+                        <v-btn small color="#1976D2" :loading="loading1" v-if="notify[0].status === 'Pending...'" class="white--text ma-2 mb-12" v-on:click="NotGranted()">
                              <v-icon small left>mdi-close</v-icon>
                              Not Granted
                         </v-btn>
@@ -135,7 +139,11 @@ export default {
         return{
             assets: [],
              snackbar: false,
-             snackbar1: false
+             snackbar1: false,
+             snackbar2: false,
+             current: null,
+             loading: false,
+             loading1: false
         }
     },
     computed:{
@@ -148,7 +156,6 @@ export default {
     },
     methods:{
         view(id){
-            alert(id);
             this.$store.dispatch("ViewAssetsAssignedById", id)
             .then((success)=>{
                 console.log(success);
@@ -158,18 +165,14 @@ export default {
          })
         },
         select(event_id,assign_quantity,itemId){
-            alert(event_id)
-            alert(assign_quantity)
-            alert(itemId)
             this.assets.push({event_id,assign_quantity,itemId})
             console.log(this.assets)
+            this.current = event_id
+            this.snackbar2 = true
 
         },
         Assign(){
-            alert(this.$store.state.viewrequest[0].request_id)
-            alert(this.$store.state.viewrequest[0].requested_by)
-            alert(this.$store.state.username[0].UserName)
-            alert(this.$store.state.assetsassigned[0].location)
+            this.loading = true
              this.$store.dispatch("AssignAsset",{
                 "requestStatus": "ACCEPTED",
                 "requestId": this.$store.state.viewrequest[0].request_id,
@@ -180,14 +183,16 @@ export default {
         })
         .then((success)=>{
           console.log(success);
+          this.loading = false
           this.snackbar = true
+          this.$router.push("/storekeeper")
         })
         .catch((error)=>{
           console.log(error);
         })
       },
       NotGranted(){
-          alert("do you really want to reject request???")
+          this.loading1 = true
            this.$store.dispatch("AssignAsset",{
                 "requestStatus": "NOT GRANTED",
                 "requestId": this.$store.state.viewrequest[0].request_id,
@@ -197,7 +202,9 @@ export default {
            })
            .then((success)=>{
                console.log(success)
+               this.loading = false
                this.snackbar1 = true
+               this.$router.push("/notifications")
            })
            .catch((error)=>{
                console.log(error);
@@ -218,9 +225,7 @@ export default {
     background-size: cover;
 }
 .active{
-    color: green;
-    font-weight: bold;
-    transition: 0.2s ease-in;
-    transform: scale(1.05);
+  color: white;
+  background: #1976D2;
 }
 </style>
